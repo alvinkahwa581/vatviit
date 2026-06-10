@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaTViT | Global Trading Terminal</title>
+    <!-- Include Tailwind CSS if you use it, or your own styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000; margin: 0; color: white; overflow: hidden; }
+        /* Custom scrollbar for a pro feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <!-- The Dashboard Final Fixer will inject the Sidebar and Charts here automatically -->
+    </div>
+
+    <!-- 1. The main logic file we created -->
+    <script src="vatvit_dashboard_final_fixer.js"></script>
+    
+    <!-- 2. The TradingView library (required for charts) -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+</body>
+</html>
+  
