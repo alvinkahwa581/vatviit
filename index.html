@@ -1,29 +1,580 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VaTViT | Global Trading Terminal</title>
-    <!-- Include Tailwind CSS if you use it, or your own styles -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #000; margin: 0; color: white; overflow: hidden; }
-        /* Custom scrollbar for a pro feel */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaTViT — Financial Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#C9A84C;
+  --gold-lt:#E8C96A;
+  --gold-dim:#8A6E30;
+  --gold-bg:#C9A84C14;
+  --gold-border:#C9A84C33;
+  --black:#080A0E;
+  --surface:#0D1117;
+  --surface2:#111820;
+  --surface3:#161E28;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --border:#1E2A38;
+  --border-bright:#2A3848;
+  --green:#1DB97A;
+  --red:#E04040;
+  --teal:#1A8080;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px;vertical-align:2px;font-family:'Inter',sans-serif}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--gold);color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:background .2s,transform .15s}
+.nav-cta:hover{background:var(--gold-lt);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 6vw 80px;text-align:center;position:relative;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.35}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(201,168,76,.12) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold-bg);border:1px solid var(--gold-border);color:var(--gold);font-size:.75rem;font-weight:600;letter-spacing:.08em;padding:.35rem .85rem;border-radius:100px;margin-bottom:1.5rem;text-transform:uppercase}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;max-width:900px;margin:0 auto .5rem}
+h1 .gold{color:var(--gold)}
+h1 .dim{color:var(--white-dimmer)}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--white-dim);max-width:560px;margin:1.25rem auto 2.5rem;line-height:1.7}
+.hero-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:var(--gold);color:var(--black);padding:.75rem 2rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--white);padding:.75rem 2rem;border-radius:var(--r);font-weight:500;font-size:1rem;text-decoration:none;border:1px solid var(--border-bright);transition:all .2s;cursor:pointer}
+.btn-ghost:hover{border-color:var(--gold-border);color:var(--gold)}
+.hero-stats{display:flex;align-items:center;gap:3rem;margin-top:4rem;flex-wrap:wrap;justify-content:center}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--gold);display:block}
+.hero-stat-label{font-size:.8rem;color:var(--white-dimmer);text-transform:uppercase;letter-spacing:.08em;margin-top:.15rem}
+.stat-divider{width:1px;height:48px;background:var(--border)}
+
+/* ── TICKER ── */
+.ticker{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.6rem 0;overflow:hidden;position:relative}
+.ticker-inner{display:flex;gap:3rem;white-space:nowrap;animation:ticker 30s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.tick-item{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;font-family:monospace;color:var(--white-dim)}
+.tick-sym{color:var(--white);font-weight:600}
+.tick-up{color:var(--green)}
+.tick-dn{color:var(--red)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTIONS COMMON ── */
+section{padding:6rem 6vw}
+.section-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-tag::before{content:'';width:20px;height:1px;background:var(--gold)}
+h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:1rem}
+.section-lead{color:var(--white-dim);font-size:1.1rem;max-width:560px;margin-bottom:3rem;line-height:1.7}
+
+/* ── WHAT IS ── */
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.what-visual{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:2rem;position:relative;overflow:hidden}
+.what-visual::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.layer-stack{display:flex;flex-direction:column;gap:.6rem}
+.layer{display:flex;align-items:center;gap:.85rem;padding:.75rem 1rem;background:var(--surface3);border:1px solid var(--border);border-radius:var(--r);transition:all .25s;cursor:default}
+.layer:hover{border-color:var(--gold-border);background:var(--gold-bg)}
+.layer-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.layer-name{font-size:.85rem;font-weight:600;color:var(--white);flex:1}
+.layer-tech{font-size:.72rem;color:var(--white-dimmer);font-family:monospace}
+.layer-arrow{color:var(--white-dimmer);font-size:.75rem;opacity:.4}
+.what-points{display:flex;flex-direction:column;gap:1.5rem}
+.what-point{display:flex;align-items:flex-start;gap:1rem}
+.wp-icon{width:40px;height:40px;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
+.wp-title{font-weight:600;font-size:1rem;margin-bottom:.25rem}
+.wp-desc{font-size:.875rem;color:var(--white-dim);line-height:1.6}
+
+/* ── BENTO ── */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:1rem}
+.bento-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.75rem;position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+.bento-card:hover{border-color:var(--gold-border);transform:translateY(-3px)}
+.bento-card.wide{grid-column:span 2}
+.bento-card.tall{grid-row:span 2}
+.bento-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(201,168,76,.06),transparent 60%);pointer-events:none}
+.bc-tag{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.bc-title{font-size:1.15rem;font-weight:700;margin-bottom:.5rem;line-height:1.3}
+.bc-desc{font-size:.85rem;color:var(--white-dim);line-height:1.6}
+.bc-icon{font-size:2rem;margin-bottom:.75rem;display:block}
+.bc-visual{margin-top:1.25rem}
+/* Ledger visual */
+.ledger-rows{display:flex;flex-direction:column;gap:.35rem}
+.ledger-row{display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-family:monospace;padding:.4rem .6rem;background:var(--surface3);border-radius:4px;border-left:2px solid transparent}
+.ledger-row.dr{border-left-color:var(--red)}
+.ledger-row.cr{border-left-color:var(--green)}
+.lr-acc{flex:1;color:var(--white-dim)}
+.lr-amt{font-weight:600}
+.lr-dr{color:var(--red)}
+.lr-cr{color:var(--green)}
+/* Circuit breaker visual */
+.cb-states{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.75rem}
+.cb-state{font-size:.68rem;font-weight:600;padding:.3rem .65rem;border-radius:100px;border:1px solid}
+.cb-state.active{background:rgba(30,185,122,.15);border-color:var(--green);color:var(--green)}
+.cb-state.warn{background:rgba(239,159,39,.12);border-color:#EF9F27;color:#EF9F27}
+.cb-state.danger{background:rgba(224,64,64,.12);border-color:var(--red);color:var(--red)}
+.cb-state.idle{background:var(--surface3);border-color:var(--border);color:var(--white-dimmer)}
+.cb-arrow{color:var(--white-dimmer);font-size:.7rem}
+/* Stat bars */
+.stat-bars{display:flex;flex-direction:column;gap:.6rem;margin-top:.75rem}
+.sbar{display:flex;align-items:center;gap:.75rem;font-size:.75rem}
+.sbar-label{width:80px;color:var(--white-dim);flex-shrink:0}
+.sbar-track{flex:1;height:5px;background:var(--surface3);border-radius:100px;overflow:hidden}
+.sbar-fill{height:100%;background:var(--gold);border-radius:100px}
+.sbar-val{width:32px;text-align:right;color:var(--white);font-family:monospace;font-weight:600}
+/* Market data mini */
+.market-ticks{display:flex;flex-direction:column;gap:.4rem;margin-top:.75rem}
+.mt-row{display:flex;align-items:center;gap:.6rem;font-size:.75rem;font-family:monospace;padding:.4rem .6rem;background:var(--surface3);border-radius:4px}
+.mt-sym{font-weight:600;color:var(--white);width:60px}
+.mt-price{flex:1;color:var(--white-dim)}
+.mt-chg{font-weight:600;padding:.15rem .45rem;border-radius:3px;font-size:.7rem}
+.mt-chg.up{background:rgba(29,185,122,.15);color:var(--green)}
+.mt-chg.dn{background:rgba(224,64,64,.12);color:var(--red)}
+/* Brokers */
+.broker-logos{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.75rem}
+.broker-pill{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:.35rem .8rem;font-size:.72rem;color:var(--white-dim);font-weight:500}
+.broker-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+/* KYC */
+.kyc-flow{display:flex;flex-direction:column;gap:.4rem;margin-top:.75rem}
+.kyc-step{display:flex;align-items:center;gap:.6rem;font-size:.78rem;padding:.4rem .6rem;background:var(--surface3);border-radius:4px}
+.kyc-num{width:20px;height:20px;border-radius:50%;background:var(--gold-bg);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:var(--gold);flex-shrink:0}
+.kyc-label{color:var(--white-dim)}
+.kyc-status{margin-left:auto;font-size:.65rem;font-weight:600;color:var(--green);background:rgba(29,185,122,.1);padding:.15rem .4rem;border-radius:3px}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;position:relative}
+.steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 6px,transparent 6px,transparent 14px)}
+.step-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;text-align:center;position:relative;transition:border-color .25s}
+.step-card:hover{border-color:var(--gold-border)}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--black);font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;position:relative;z-index:1}
+.step-title{font-weight:700;font-size:.95rem;margin-bottom:.4rem}
+.step-desc{font-size:.8rem;color:var(--white-dim);line-height:1.6}
+
+/* ── COMPLIANCE ── */
+.compliance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.comp-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;display:flex;flex-direction:column;gap:.6rem;transition:border-color .25s}
+.comp-card:hover{border-color:var(--gold-border)}
+.comp-badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .6rem;border-radius:100px;background:var(--gold-bg);border:1px solid var(--gold-border);color:var(--gold);align-self:flex-start}
+.comp-title{font-weight:700;font-size:1rem;line-height:1.3}
+.comp-desc{font-size:.825rem;color:var(--white-dim);line-height:1.6;flex:1}
+.comp-check{font-size:.75rem;color:var(--green);margin-top:.25rem}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.testi-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.75rem;transition:border-color .25s}
+.testi-card:hover{border-color:var(--gold-border)}
+.testi-stars{color:var(--gold);font-size:.85rem;margin-bottom:1rem;letter-spacing:2px}
+.testi-text{font-size:.9rem;color:var(--white-dim);line-height:1.7;margin-bottom:1.5rem;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-bg);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:var(--gold)}
+.testi-name{font-weight:600;font-size:.875rem}
+.testi-role{font-size:.75rem;color:var(--white-dimmer)}
+
+/* ── CTA ── */
+.cta-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:6rem 6vw;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:200px;background:radial-gradient(ellipse,rgba(201,168,76,.1),transparent 70%);pointer-events:none}
+.cta-section h2{margin-bottom:1rem}
+.cta-sub{color:var(--white-dim);font-size:1.05rem;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-features{display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.cta-feat{display:flex;align-items:center;gap:.4rem;font-size:.825rem;color:var(--white-dim)}
+.cta-feat::before{content:'✓';color:var(--green);font-weight:700}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 6vw 2rem}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.footer-brand .nav-logo{font-size:1.3rem;display:inline-block;margin-bottom:.75rem}
+.footer-brand p{font-size:.825rem;color:var(--white-dimmer);line-height:1.6;max-width:240px}
+.footer-col h4{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:.85rem}
+.footer-col a{display:block;font-size:.825rem;color:var(--white-dimmer);text-decoration:none;margin-bottom:.4rem;transition:color .2s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.775rem;color:var(--white-dimmer);flex-wrap:wrap;gap:.5rem}
+.footer-badges{display:flex;gap:.75rem}
+.fb{background:var(--gold-bg);border:1px solid var(--gold-border);color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.06em;padding:.2rem .5rem;border-radius:3px;text-transform:uppercase}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .what-grid,.bento,.steps,.compliance-grid,.testi-grid,.footer-top{grid-template-columns:1fr}
+  .bento-card.wide{grid-column:auto}
+  .bento-card.tall{grid-row:auto}
+  .steps::before{display:none}
+  .nav-links{display:none}
+  h1{font-size:2.5rem}
+}
+</style>
 </head>
 <body>
-    <div id="root">
-        <!-- The Dashboard Final Fixer will inject the Sidebar and Charts here automatically -->
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="#platform">Platform</a>
+    <a href="#compliance">Compliance</a>
+    <a href="#brokers">Brokers</a>
+    <a href="#about">About</a>
+    <a href="#get-started" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker" style="margin-top:64px">
+  <div class="ticker-inner">
+    <span class="tick-item"><span class="tick-sym">NSE:SCOM</span> KES 18.45 <span class="tick-up">▲ +1.23%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:KCB</span> KES 42.10 <span class="tick-up">▲ +0.87%</span></span>
+    <span class="tick-item"><span class="tick-sym">EURUSD</span> 1.0812 <span class="tick-dn">▼ −0.12%</span></span>
+    <span class="tick-item"><span class="tick-sym">XAUUSD</span> 2,341.50 <span class="tick-up">▲ +0.45%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:EQTY</span> KES 51.75 <span class="tick-dn">▼ −0.34%</span></span>
+    <span class="tick-item"><span class="tick-sym">BTCUSD</span> 67,210 <span class="tick-up">▲ +2.15%</span></span>
+    <span class="tick-item"><span class="tick-sym">GBPUSD</span> 1.2654 <span class="tick-up">▲ +0.09%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:BAMB</span> KES 34.90 <span class="tick-up">▲ +0.55%</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick-item"><span class="tick-sym">NSE:SCOM</span> KES 18.45 <span class="tick-up">▲ +1.23%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:KCB</span> KES 42.10 <span class="tick-up">▲ +0.87%</span></span>
+    <span class="tick-item"><span class="tick-sym">EURUSD</span> 1.0812 <span class="tick-dn">▼ −0.12%</span></span>
+    <span class="tick-item"><span class="tick-sym">XAUUSD</span> 2,341.50 <span class="tick-up">▲ +0.45%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:EQTY</span> KES 51.75 <span class="tick-dn">▼ −0.34%</span></span>
+    <span class="tick-item"><span class="tick-sym">BTCUSD</span> 67,210 <span class="tick-up">▲ +2.15%</span></span>
+    <span class="tick-item"><span class="tick-sym">GBPUSD</span> 1.2654 <span class="tick-up">▲ +0.09%</span></span>
+    <span class="tick-item"><span class="tick-sym">NSE:BAMB</span> KES 34.90 <span class="tick-up">▲ +0.55%</span></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Kenya's First Financial Operating System</div>
+  <h1>One System.<br><span class="gold">All Markets.</span><br><span class="dim">Zero Silos.</span></h1>
+  <p class="hero-sub">VaTViT unifies your NSE stocks, Forex positions, international equities and crypto into one compliance-first platform — backed by an immutable double-entry ledger.</p>
+  <div class="hero-actions">
+    <a href="#get-started" class="btn-primary">Request Early Access</a>
+    <a href="#platform" class="btn-ghost">See the Platform</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-num">4+</span><span class="hero-stat-label">Market Types</span></div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat"><span class="hero-stat-num">CMA</span><span class="hero-stat-label">Sandbox Ready</span></div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat"><span class="hero-stat-num">0</span><span class="hero-stat-label">Ledger Gaps</span></div>
+    <div class="stat-divider"></div>
+    <div class="hero-stat"><span class="hero-stat-num">1</span><span class="hero-stat-label">Unified Viewport</span></div>
+  </div>
+</section>
+
+<!-- WHAT IS VATVIT -->
+<section id="platform" style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="reveal">
+    <div class="section-tag">What is VaTViT</div>
+    <div class="what-grid">
+      <div>
+        <h2>Not an app.<br>An operating system.</h2>
+        <p class="section-lead">Most platforms are siloed applications. VaTViT is the financial spine beneath them — server-centric, compliance-engineered, and designed to hold the weight of institutional-grade capital.</p>
+        <div class="what-points">
+          <div class="what-point">
+            <div class="wp-icon">⚙</div>
+            <div><div class="wp-title">System-Centric Architecture</div><div class="wp-desc">All business logic runs server-side. The client is a read-only viewport. No state lives on your device.</div></div>
+          </div>
+          <div class="what-point">
+            <div class="wp-icon">📒</div>
+            <div><div class="wp-title">Immutable Double-Entry Ledger</div><div class="wp-desc">Every transaction is a ledger event. Append-only. Cryptographically chained. Auditable forever.</div></div>
+          </div>
+          <div class="what-point">
+            <div class="wp-icon">🔗</div>
+            <div><div class="wp-title">Universal Brokerage Wrapper</div><div class="wp-desc">One interface speaks FIX, REST, and WebSocket to every broker. You see one portfolio. We handle the rest.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="what-visual">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white-dimmer);margin-bottom:1rem">FinOS Layer Model</div>
+        <div class="layer-stack">
+          <div class="layer"><div class="layer-dot" style="background:#7F77DD"></div><div class="layer-name">Client Interface</div><div class="layer-tech">React Native · Next.js</div><div class="layer-arrow">→</div></div>
+          <div class="layer"><div class="layer-dot" style="background:#1A8080"></div><div class="layer-name">API Gateway</div><div class="layer-tech">JWT · mTLS · OAuth 2.0</div><div class="layer-arrow">→</div></div>
+          <div class="layer" style="border-color:var(--gold-border);background:var(--gold-bg)"><div class="layer-dot" style="background:var(--gold)"></div><div class="layer-name" style="color:var(--gold)">FinOS Core</div><div class="layer-tech" style="color:var(--gold-dim)">Ledger · Trade Engine · P&amp;L</div><div class="layer-arrow">→</div></div>
+          <div class="layer"><div class="layer-dot" style="background:#E24B4A"></div><div class="layer-name">Compliance Layer</div><div class="layer-tech">KYC · AML · Audit Trail</div><div class="layer-arrow">→</div></div>
+          <div class="layer"><div class="layer-dot" style="background:#1DB97A"></div><div class="layer-name">Data Fabric</div><div class="layer-tech">PostgreSQL · Redis · Kafka</div><div class="layer-arrow">→</div></div>
+          <div class="layer"><div class="layer-dot" style="background:#8A9BB0"></div><div class="layer-name">Brokerage Wrapper</div><div class="layer-tech">NSE · MT4/5 · IB · Crypto</div><div class="layer-arrow">→</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENTO FEATURES -->
+<section id="features">
+  <div class="reveal">
+    <div class="section-tag">Core Capabilities</div>
+    <h2>Built for institutions.<br>Accessible to everyone.</h2>
+    <p class="section-lead">Six engineered modules. One coherent system.</p>
+  </div>
+  <div class="bento reveal">
+    <!-- Ledger — wide -->
+    <div class="bento-card wide">
+      <div class="bc-tag">Ledger Engine</div>
+      <div class="bc-title">Append-only double-entry ledger</div>
+      <div class="bc-desc">Every financial event — deposit, trade, fee, correction — is recorded as an immutable ledger entry. SHA-256 hash chain. No updates. No deletes. Ever.</div>
+      <div class="bc-visual">
+        <div class="ledger-rows">
+          <div class="ledger-row dr"><span class="lr-acc">1001 · User Cash KES</span><span class="lr-amt lr-dr">DR  50,000.00</span></div>
+          <div class="ledger-row cr"><span class="lr-acc">2100 · Deposits Liability</span><span class="lr-amt lr-cr">CR  50,000.00</span></div>
+          <div class="ledger-row dr"><span class="lr-acc">1100 · User Portfolio</span><span class="lr-amt lr-dr">DR  12,450.00</span></div>
+          <div class="ledger-row cr"><span class="lr-acc">1001 · User Cash KES</span><span class="lr-amt lr-cr">CR  12,450.00</span></div>
+        </div>
+      </div>
     </div>
 
-    <!-- 1. The main logic file we created -->
-    <script src="vatvit_dashboard_final_fixer.js"></script>
-    
-    <!-- 2. The TradingView library (required for charts) -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <!-- Circuit Breaker -->
+    <div class="bento-card">
+      <div class="bc-tag">Risk Monitor</div>
+      <div class="bc-title">Automatic circuit breaker</div>
+      <div class="bc-desc">A 1-cent discrepancy between our ledger and the broker halts transactions automatically. No human delay.</div>
+      <div class="bc-visual">
+        <div class="cb-states">
+          <span class="cb-state active">NORMAL</span>
+          <span class="cb-arrow">→</span>
+          <span class="cb-state warn">DISCREPANCY</span>
+          <span class="cb-arrow">→</span>
+          <span class="cb-state danger">HALTED</span>
+          <span class="cb-arrow">→</span>
+          <span class="cb-state idle">RESOLVED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Market Data — tall -->
+    <div class="bento-card tall">
+      <div class="bc-tag">Market Data</div>
+      <div class="bc-title">Live telemetry, normalised</div>
+      <div class="bc-desc">Real-time feeds from every connected market, normalised into one unified data model. NSE, Forex, crypto — same schema.</div>
+      <div class="bc-visual">
+        <div class="market-ticks">
+          <div class="mt-row"><span class="mt-sym">SCOM</span><span class="mt-price">KES 18.45</span><span class="mt-chg up">+1.23%</span></div>
+          <div class="mt-row"><span class="mt-sym">KCB</span><span class="mt-price">KES 42.10</span><span class="mt-chg up">+0.87%</span></div>
+          <div class="mt-row"><span class="mt-sym">EQTY</span><span class="mt-price">KES 51.75</span><span class="mt-chg dn">−0.34%</span></div>
+          <div class="mt-row"><span class="mt-sym">EURUSD</span><span class="mt-price">1.0812</span><span class="mt-chg dn">−0.12%</span></div>
+          <div class="mt-row"><span class="mt-sym">XAUUSD</span><span class="mt-price">2,341.50</span><span class="mt-chg up">+0.45%</span></div>
+          <div class="mt-row"><span class="mt-sym">BTC</span><span class="mt-price">67,210</span><span class="mt-chg up">+2.15%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P&L -->
+    <div class="bento-card">
+      <div class="bc-tag">Portfolio P&L</div>
+      <div class="bc-title">Real-time position tracking</div>
+      <div class="bc-desc">Mark-to-market across all asset classes in real time. One NAV. One truth.</div>
+      <div class="bc-visual">
+        <div class="stat-bars">
+          <div class="sbar"><span class="sbar-label">NSE Equities</span><div class="sbar-track"><div class="sbar-fill" style="width:62%"></div></div><span class="sbar-val">62%</span></div>
+          <div class="sbar"><span class="sbar-label">Forex / CFD</span><div class="sbar-track"><div class="sbar-fill" style="width:21%"></div></div><span class="sbar-val">21%</span></div>
+          <div class="sbar"><span class="sbar-label">Crypto</span><div class="sbar-track"><div class="sbar-fill" style="width:12%"></div></div><span class="sbar-val">12%</span></div>
+          <div class="sbar"><span class="sbar-label">Cash</span><div class="sbar-track"><div class="sbar-fill" style="width:5%"></div></div><span class="sbar-val">5%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KYC -->
+    <div class="bento-card">
+      <div class="bc-tag">Compliance</div>
+      <div class="bc-title">Automated KYC / AML</div>
+      <div class="bc-desc">Smile ID integration for identity verification. Real-time AML transaction monitoring. Fully automated — no manual queues.</div>
+      <div class="bc-visual">
+        <div class="kyc-flow">
+          <div class="kyc-step"><span class="kyc-num">1</span><span class="kyc-label">ID Document Upload</span><span class="kyc-status">✓ Done</span></div>
+          <div class="kyc-step"><span class="kyc-num">2</span><span class="kyc-label">Smile ID Verify</span><span class="kyc-status">✓ Done</span></div>
+          <div class="kyc-step"><span class="kyc-num">3</span><span class="kyc-label">AML Risk Score</span><span class="kyc-status">✓ Low</span></div>
+          <div class="kyc-step"><span class="kyc-num">4</span><span class="kyc-label">Account Approved</span><span class="kyc-status">✓ Live</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brokers — wide -->
+    <div class="bento-card wide" id="brokers">
+      <div class="bc-tag">Brokerage Wrapper</div>
+      <div class="bc-title">One interface. Every market.</div>
+      <div class="bc-desc">The Universal Brokerage Wrapper translates between VaTViT's unified data model and every broker's native protocol. FIX 4.4, REST, WebSocket. You see one portfolio — we speak every language.</div>
+      <div class="bc-visual">
+        <div class="broker-logos">
+          <span class="broker-pill"><span class="broker-dot"></span>NSE — Nairobi Securities Exchange</span>
+          <span class="broker-pill"><span class="broker-dot"></span>MT4 / MT5 via FIX 4.4</span>
+          <span class="broker-pill"><span class="broker-dot"></span>Interactive Brokers</span>
+          <span class="broker-pill"><span class="broker-dot"></span>Alpaca REST</span>
+          <span class="broker-pill"><span class="broker-dot"></span>Crypto WebSocket</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="reveal" style="text-align:center;margin-bottom:3rem">
+    <div class="section-tag" style="justify-content:center">How It Works</div>
+    <h2>From signup to unified portfolio<br>in four steps</h2>
+  </div>
+  <div class="steps reveal">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Create Account & KYC</div>
+      <div class="step-desc">Register and complete automated identity verification via Smile ID. Approval in minutes.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Connect Your Brokers</div>
+      <div class="step-desc">Link your NSE, Forex, or international brokerage accounts via our secure Universal Wrapper.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">View Unified Portfolio</div>
+      <div class="step-desc">All positions, P&L, and market data appear in one real-time viewport. One truth.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-title">Trade & Stay Compliant</div>
+      <div class="step-desc">Execute trades through VaTViT. The compliance layer, ledger, and circuit breaker run automatically.</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section id="compliance">
+  <div class="reveal">
+    <div class="section-tag">Regulatory Framework</div>
+    <h2>Compliance isn't a feature.<br>It's the foundation.</h2>
+    <p class="section-lead">Designed from day one for Kenya's regulatory environment. Every module maps to a specific CMA, CBK, or ODPC requirement.</p>
+  </div>
+  <div class="compliance-grid reveal">
+    <div class="comp-card">
+      <div class="comp-badge">CMA</div>
+      <div class="comp-title">Capital Markets Authority</div>
+      <div class="comp-desc">VaTViT is being designed for CMA Regulatory Sandbox entry. Our system boundary design ensures we operate as a Financial Operating System — not a broker, and not a fund manager.</div>
+      <div class="comp-check">✓ Sandbox application in preparation</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge">CBK</div>
+      <div class="comp-title">Central Bank of Kenya</div>
+      <div class="comp-desc">AML transaction monitoring, sanctions screening against CBK watchlists, and 7-year document retention in full compliance with CBK anti-money laundering guidelines.</div>
+      <div class="comp-check">✓ AML engine operational at launch</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-badge">ODPC</div>
+      <div class="comp-title">Data Protection Act</div>
+      <div class="comp-desc">All personal data of Kenyan users stored in-country. Data Processing Agreements in place with all third-party processors. Right-to-erasure supported natively in the platform.</div>
+      <div class="comp-check">✓ Nairobi-region data residency</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="reveal" style="text-align:center;margin-bottom:3rem">
+    <div class="section-tag" style="justify-content:center">Early Voices</div>
+    <h2>What institutional partners say</h2>
+  </div>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The idea of a single viewport across my NSE, Forex, and crypto positions has been a gap in the Kenyan market for years. VaTViT is the first credible answer."</div>
+      <div class="testi-author"><div class="testi-avatar">MK</div><div><div class="testi-name">M. Kariuki</div><div class="testi-role">Portfolio Manager, Nairobi</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The compliance-first approach is what makes this credible. An append-only ledger with circuit breakers isn't just good engineering — it's what regulators actually want to see."</div>
+      <div class="testi-author"><div class="testi-avatar">AO</div><div><div class="testi-name">A. Odhiambo</div><div class="testi-role">Fintech Advisor, Nairobi</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"We've been waiting for a platform that treats compliance as architecture, not an afterthought. VaTViT's technical foundation is the most serious we've reviewed in the East African market."</div>
+      <div class="testi-author"><div class="testi-avatar">JN</div><div><div class="testi-name">J. Njuguna</div><div class="testi-role">Investment Director, Nairobi</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="get-started">
+  <div class="cta-glow"></div>
+  <div class="reveal" style="position:relative;z-index:1">
+    <div class="section-tag" style="justify-content:center">Early Access</div>
+    <h2>Join the waitlist.<br>Shape the platform.</h2>
+    <p class="cta-sub">We're accepting a limited cohort of early-access users and institutional partners ahead of our CMA Sandbox launch.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto">
+      <input type="email" placeholder="your@email.com" style="flex:1;min-width:200px;padding:.75rem 1rem;background:var(--surface2);border:1px solid var(--border-bright);border-radius:var(--r);color:var(--white);font-size:.95rem;outline:none">
+      <button class="btn-primary" style="flex-shrink:0">Request Access</button>
+    </div>
+    <div class="cta-features">
+      <span class="cta-feat">No credit card required</span>
+      <span class="cta-feat">CMA Sandbox participant</span>
+      <span class="cta-feat">Kenya-first platform</span>
+      <span class="cta-feat">Institutional-grade security</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">VaTViT</a>
+      <p>Kenya's Financial Operating System — unifying market telemetry, trade execution, portfolio P&L and compliance under one roof.</p>
+      <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+        <span class="fb">CMA Sandbox</span>
+        <span class="fb">ODPC Compliant</span>
+        <span class="fb">CBK AML</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#">Ledger Engine</a>
+      <a href="#">Trade Engine</a>
+      <a href="#">Portfolio P&L</a>
+      <a href="#">Market Data</a>
+      <a href="#">Analytics</a>
+    </div>
+    <div class="footer-col">
+      <h4>Compliance</h4>
+      <a href="#">KYC / AML</a>
+      <a href="#">Audit Trail</a>
+      <a href="#">Data Residency</a>
+      <a href="#">CMA Sandbox</a>
+      <a href="#">Security</a>
+    </div>
+    <div class="footer-col" id="about">
+      <h4>Company</h4>
+      <a href="#">About VaTViT</a>
+      <a href="#">Justohelps Dev</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VaTViT Ltd. All rights reserved. Nairobi, Kenya.</span>
+    <span>Built by Justohelps Dev · Engineering Partner</span>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>
-  
