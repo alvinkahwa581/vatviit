@@ -14,7 +14,7 @@
     if (!document.getElementById('dashboard-tab-navigation')) {
         var sidebar = document.createElement('div');
         sidebar.id = 'dashboard-tab-navigation';
-        sidebar.style.cssText = 'width:64px; height:100vh; background:#030712; border-right:1px solid #1f2937; display:flex; flex-direction:column; align-items:center; padding:15px 0; gap:15px; z-index:1000; flex-shrink:0;';
+        sidebar.style.cssText = 'width:74px; height:100vh; background:linear-gradient(180deg,#070b13 0%,#030712 100%); border-right:1px solid #1f2937; display:flex; flex-direction:column; align-items:center; padding:16px 0 18px; gap:12px; z-index:1000; flex-shrink:0; box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset;';
         
         var tabs = [
           {l:'Overview', i:'🏠'}, {l:'Markets', i:'📊'}, {l:'Chart', i:'📈'}, 
@@ -23,7 +23,7 @@
         ];
 
         sidebar.innerHTML = tabs.map(function(t, idx) {
-          return '<button class="tab-btn" data-index="'+idx+'" title="'+t.l+'" style="width:40px; height:40px; background:#111827; border:1px solid #1f2937; border-radius:10px; cursor:pointer; font-size:18px; color:#6b7280; display:flex; align-items:center; justify-content:center;">'+t.i+'</button>';
+          return '<button class="tab-btn" data-index="'+idx+'" title="'+t.l+'" style="width:46px; height:46px; background:#111827; border:1px solid #1f2937; border-radius:12px; cursor:pointer; font-size:18px; color:#9ca3af; display:flex; align-items:center; justify-content:center; transition:all .2s ease; box-shadow:0 4px 12px rgba(0,0,0,0.2);">'+t.i+'</button>';
         }).join('');
         
         if (root) root.insertBefore(sidebar, root.firstChild);
@@ -35,15 +35,35 @@
         window.switchTab = function(idx) {
           panels.forEach(function(p, i) { if(p) p.style.display = (i === idx) ? 'flex' : 'none'; });
           btns.forEach(function(b, i) {
-            if(i === idx) { b.style.background = '#facc15'; b.style.color = 'black'; }
-            else { b.style.background = '#111827'; b.style.color = '#6b7280'; }
+            if(i === idx) {
+              b.style.background = 'linear-gradient(135deg,#facc15 0%,#fde68a 100%)';
+              b.style.color = '#111827';
+              b.style.borderColor = '#facc15';
+              b.style.transform = 'translateY(-1px) scale(1.03)';
+            } else {
+              b.style.background = '#111827';
+              b.style.color = '#9ca3af';
+              b.style.borderColor = '#1f2937';
+              b.style.transform = 'none';
+            }
           });
           window.dispatchEvent(new Event('resize'));
         };
 
         btns.forEach(function(btn) {
           btn.onclick = function() { window.switchTab(parseInt(this.getAttribute('data-index'))); };
+          btn.onmouseenter = function() {
+            if (this.getAttribute('data-index') !== String(window.currentTabIndex)) {
+              this.style.borderColor = '#374151';
+            }
+          };
+          btn.onmouseleave = function() {
+            if (this.getAttribute('data-index') !== String(window.currentTabIndex)) {
+              this.style.borderColor = '#1f2937';
+            }
+          };
         });
+        window.currentTabIndex = 0;
         window.switchTab(0);
     }
 

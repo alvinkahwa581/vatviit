@@ -9,9 +9,10 @@
     var s = d.createElement("style");
     var c = "#root { min-height: 100vh; background: black; display: flex; flex-direction: row; overflow: hidden; } " +
             ".flex.border-b.border-gray-800.overflow-x-auto { flex-wrap: wrap !important; } " +
-            "#dashboard-tab-navigation { width: 64px; height: 100vh; background: #030712; border-right: 1px solid #1f2937; display: flex; flex-direction: column; align-items: center; padding: 15px 0; gap: 15px; flex-shrink: 0; } " +
-            ".tab-btn { width: 40px; height: 40px; background: #111827; border: 1px solid #1f2937; border-radius: 10px; cursor: pointer; font-size: 18px; color: #6b7280; display: flex; align-items: center; justify-content: center; transition: 0.2s; } " +
-            ".tab-btn:hover { border-color: #facc15; box-shadow: 0 0 10px rgba(250,204,21,0.2); }";
+            "#dashboard-tab-navigation { width: 74px; height: 100vh; background: linear-gradient(180deg,#070b13 0%,#030712 100%); border-right: 1px solid #1f2937; display: flex; flex-direction: column; align-items: center; padding: 16px 0 18px; gap: 12px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03); } " +
+            ".tab-btn { width: 46px; height: 46px; background: #111827; border: 1px solid #1f2937; border-radius: 12px; cursor: pointer; font-size: 18px; color: #9ca3af; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); } " +
+            ".tab-btn:hover { border-color: #facc15; box-shadow: 0 0 12px rgba(250,204,21,0.2); transform: translateY(-1px); } " +
+            ".tab-btn.active { background: linear-gradient(135deg,#facc15 0%,#fde68a 100%); color: #111827; border-color: #facc15; transform: translateY(-1px) scale(1.03); }";
     s.type = "text/css";
     if (s.styleSheet) { s.styleSheet.cssText = c; } else { s.appendChild(d.createTextNode(c)); }
     h.appendChild(s);
@@ -36,11 +37,14 @@
       btns.forEach(function(btn) {
         btn.onclick = function() {
           var idx = parseInt(this.getAttribute('data-index'));
-          btns.forEach(function(b, i) { b.style.background = (i === idx) ? '#facc15' : '#111827'; b.style.color = (i === idx) ? 'black' : '#6b7280'; });
+          btns.forEach(function(b, i) {
+            b.classList.toggle('active', i === idx);
+          });
           w.dispatchEvent(new Event('resize'));
           if (idx === 9) alert("CEO: 0724862593 | Management: 07112930938");
         };
       });
+      if (btns[0]) btns[0].classList.add('active');
     }
 
     // 3. START BINANCE DATA
