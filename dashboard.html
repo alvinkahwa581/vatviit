@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — VaTViT Trading Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#FFD700;
+  --gold-lt:#FFED4E;
+  --gold-dim:#FFA500;
+  --gold-bg:#FFD70020;
+  --gold-border:#FFD70040;
+  --black:#0A0E15;
+  --surface:#0F1419;
+  --surface2:#141A24;
+  --surface3:#1A212E;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --border:#1E2A38;
+  --border-bright:#2A3848;
+  --green:#00FF88;
+  --green-dim:#00CC6B;
+  --orange:#FF6B35;
+  --yellow:#FFED4E;
+  --red:#E04040;
+  --teal:#1A8080;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);border-bottom:2px solid rgba(0,255,136,.2);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px;vertical-align:2px;font-family:Calibri,sans-serif}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s;transform:none}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,215,0,.3)}
+
+/* ── DASHBOARD LAYOUT ── */
+.dashboard{display:grid;grid-template-columns:250px 1fr;min-height:100vh;margin-top:64px}
+.sidebar{background:linear-gradient(180deg,rgba(15,20,25,0.95),rgba(10,14,21,0.95));border-right:1px solid rgba(0,255,136,.1);padding:2rem 1.5rem;position:fixed;height:calc(100vh - 64px);width:250px;overflow-y:auto}
+.sidebar h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:1rem;margin-top:2rem}
+.sidebar a{display:block;padding:.75rem 1rem;background:transparent;border:1px solid transparent;border-radius:var(--r);color:var(--white-dim);text-decoration:none;transition:all .2s;margin-bottom:.5rem}
+.sidebar a:hover{background:rgba(0,255,136,.1);border-color:var(--green);color:var(--green)}
+.sidebar a.active{background:rgba(0,255,136,.15);border-color:var(--green);color:var(--green);font-weight:600}
+
+.main-content{margin-left:250px;padding:2rem 4vw}
+
+/* ── GRID LAYOUTS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem}
+.metric-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:1.5rem;backdrop-filter:blur(10px);transition:all .3s}
+.metric-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,255,136,.1)}
+.metric-label{font-size:.75rem;color:var(--white-dimmer);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.metric-value{font-size:1.75rem;font-weight:800;background:linear-gradient(90deg,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric-change{font-size:.8rem;margin-top:.5rem}
+.metric-change.up{color:var(--green)}
+.metric-change.down{color:var(--orange)}
+
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:2rem}
+.chart-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:1.5rem;backdrop-filter:blur(10px)}
+.chart-card h3{margin-bottom:1rem;color:var(--gold)}
+
+.positions-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-bottom:2rem}
+.positions-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:1.5rem;backdrop-filter:blur(10px)}
+
+.position-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:1rem;padding:1rem;border-bottom:1px solid rgba(0,255,136,.1);align-items:center}
+.position-row:last-child{border-bottom:none}
+.position-symbol{font-weight:600;color:var(--gold)}
+.position-entry{color:var(--white-dim)}
+.position-current{color:var(--white)}
+.position-pnl.gain{color:var(--green);font-weight:600}
+.position-pnl.loss{color:var(--orange);font-weight:600}
+.position-action{display:flex;gap:.5rem}
+.btn-sm{padding:.4rem .8rem;font-size:.75rem;border:1px solid rgba(255,215,0,.3);background:transparent;color:var(--white);border-radius:4px;cursor:pointer;transition:all .2s}
+.btn-sm:hover{background:rgba(0,255,136,.1);border-color:var(--green);color:var(--green)}
+.btn-sm.close{border-color:var(--orange);color:var(--orange)}
+.btn-sm.close:hover{background:rgba(255,107,53,.1);color:var(--orange)}
+
+/* ── BUTTONS RESPONSIVE ── */
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;transition:all .3s;border:none;cursor:pointer;box-shadow:0 10px 30px rgba(255,215,0,.25)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,.35)}
+.btn-primary:active{transform:translateY(-1px)}
+
+.btn-secondary{background:transparent;color:var(--green);border:2px solid var(--green);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:600;font-size:1rem;text-decoration:none;transition:all .2s;cursor:pointer}
+.btn-secondary:hover{background:rgba(0,255,136,.1);transform:translateY(-2px)}
+.btn-secondary:active{transform:translateY(0)}
+
+.order-form{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;backdrop-filter:blur(10px);max-width:500px}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;font-size:.875rem;font-weight:600;margin-bottom:.5rem;color:var(--gold)}
+.form-group input,.form-group select{width:100%;padding:.75rem;background:rgba(0,0,0,.3);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);color:var(--white);font-family:inherit;transition:all .2s}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--green);background:rgba(0,255,136,.05);box-shadow:0 0 15px rgba(0,255,136,.2)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .dashboard{grid-template-columns:1fr}
+  .sidebar{position:relative;width:100%;height:auto;border-right:none;border-bottom:1px solid rgba(0,255,136,.1);padding:1rem}
+  .main-content{margin-left:0}
+  .sidebar{display:flex;gap:2rem;flex-wrap:wrap}
+  .sidebar h3{display:none}
+  .position-row{grid-template-columns:1fr 1fr}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:768px){
+  nav{padding:0 4vw}
+  .nav-links{display:none}
+  .main-content{padding:1rem 4vw}
+  .metrics-grid{grid-template-columns:1fr}
+  .charts-grid{grid-template-columns:1fr}
+  .position-row{grid-template-columns:1fr}
+  .order-form{max-width:100%}
+  .btn-primary,.btn-secondary{width:100%;font-size:.9rem}
+}
+
+@media(max-width:480px){
+  nav{height:auto;padding:0.75rem 4vw;flex-direction:column;gap:1rem}
+  .nav-logo{font-size:1.1rem}
+  .main-content{padding:1rem 3vw}
+  .metric-value{font-size:1.25rem}
+  .btn-sm{padding:.3rem .6rem;font-size:.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="platform.html">Platform</a>
+    <a href="compliance.html">Compliance</a>
+    <a href="brokers.html">Brokers</a>
+    <a href="about.html">About</a>
+    <a href="#" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3>Portfolio</h3>
+    <a href="#portfolio" class="active">My Positions</a>
+    <a href="#watchlist">Watchlist</a>
+    <a href="#history">Trade History</a>
+    
+    <h3>Trading</h3>
+    <a href="#markets">Markets</a>
+    <a href="#orders">Orders</a>
+    <a href="#alerts">Alerts</a>
+    
+    <h3>Account</h3>
+    <a href="#settings">Settings</a>
+    <a href="#kyc">KYC Status</a>
+    <a href="#security">Security</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <h1 style="margin-bottom:2rem;background:linear-gradient(90deg,var(--white),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Portfolio Dashboard</h1>
+
+    <!-- METRICS -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Account Balance</div>
+        <div class="metric-value">KES 850,450</div>
+        <div class="metric-change up">↑ +12.5% today</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Portfolio Value</div>
+        <div class="metric-value">KES 1,250,890</div>
+        <div class="metric-change up">↑ +8.3% month</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total P&L</div>
+        <div class="metric-value">KES +125,340</div>
+        <div class="metric-change up">+11.2% ROI</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Open Positions</div>
+        <div class="metric-value">12</div>
+        <div class="metric-change">5 Forex • 4 Crypto • 3 Equity</div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Portfolio Growth</h3>
+        <canvas id="portfolioChart" width="400" height="200"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Asset Allocation</h3>
+        <canvas id="allocationChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- POSITIONS -->
+    <div class="positions-grid" id="portfolio">
+      <div class="positions-card">
+        <h3 style="margin-bottom:1.5rem;color:var(--gold)">Open Positions</h3>
+        <div class="position-row" style="background:rgba(0,255,136,.05);font-weight:600;margin-bottom:.5rem">
+          <div>Symbol</div>
+          <div>Entry Price</div>
+          <div>Current Price</div>
+          <div>P&L</div>
+          <div>Action</div>
+        </div>
+        
+        <div class="position-row">
+          <div class="position-symbol">EURUSD</div>
+          <div class="position-entry">1.0765</div>
+          <div class="position-current">1.0812</div>
+          <div class="position-pnl gain">+0.47%</div>
+          <div class="position-action">
+            <button class="btn-sm">View</button>
+            <button class="btn-sm close">Close</button>
+          </div>
+        </div>
+
+        <div class="position-row">
+          <div class="position-symbol">BTCUSD</div>
+          <div class="position-entry">66,500</div>
+          <div class="position-current">67,210</div>
+          <div class="position-pnl gain">+1.06%</div>
+          <div class="position-action">
+            <button class="btn-sm">View</button>
+            <button class="btn-sm close">Close</button>
+          </div>
+        </div>
+
+        <div class="position-row">
+          <div class="position-symbol">NSE:KCB</div>
+          <div class="position-entry">40.50</div>
+          <div class="position-current">42.10</div>
+          <div class="position-pnl gain">+3.95%</div>
+          <div class="position-action">
+            <button class="btn-sm">View</button>
+            <button class="btn-sm close">Close</button>
+          </div>
+        </div>
+
+        <div class="position-row">
+          <div class="position-symbol">XAUUSD</div>
+          <div class="position-entry">2,320</div>
+          <div class="position-current">2,341.5</div>
+          <div class="position-pnl gain">+0.92%</div>
+          <div class="position-action">
+            <button class="btn-sm">View</button>
+            <button class="btn-sm close">Close</button>
+          </div>
+        </div>
+
+        <div class="position-row">
+          <div class="position-symbol">ETHUSD</div>
+          <div class="position-entry">2,400</div>
+          <div class="position-current">2,385</div>
+          <div class="position-pnl loss">-0.62%</div>
+          <div class="position-action">
+            <button class="btn-sm">View</button>
+            <button class="btn-sm close">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER FORM -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem">
+      <div class="order-form">
+        <h3 style="color:var(--gold);margin-bottom:1.5rem">New Order</h3>
+        
+        <div class="form-group">
+          <label>Instrument</label>
+          <select>
+            <option>EURUSD</option>
+            <option>BTCUSD</option>
+            <option>NSE:KCB</option>
+            <option>XAUUSD</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Order Type</label>
+          <select>
+            <option>Market</option>
+            <option>Limit</option>
+            <option>Stop Loss</option>
+            <option>Take Profit</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" placeholder="Enter quantity" value="1">
+        </div>
+
+        <div class="form-group">
+          <label>Price</label>
+          <input type="number" placeholder="Enter price" step="0.01">
+        </div>
+
+        <button class="btn-primary" style="width:100%">Place Order</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div class="chart-card">
+          <h3>Market Alerts</h3>
+          <div style="font-size:.85rem;color:var(--white-dim);line-height:1.8">
+            <div style="padding:.5rem;border-bottom:1px solid rgba(0,255,136,.1)">
+              <span style="color:var(--green)">✓</span> EURUSD broke resistance at 1.0800
+            </div>
+            <div style="padding:.5rem;border-bottom:1px solid rgba(0,255,136,.1)">
+              <span style="color:var(--orange)">!</span> BTCUSD volatility spike detected
+            </div>
+            <div style="padding:.5rem;border-bottom:1px solid rgba(0,255,136,.1)">
+              <span style="color:var(--gold)">★</span> NSE:KCB trending on watchlist
+            </div>
+            <div style="padding:.5rem">
+              <span style="color:var(--green)">✓</span> Your stop order filled at 2,385
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Quick Actions</h3>
+          <button class="btn-secondary" style="width:100%;margin-bottom:.75rem">Deposit Funds</button>
+          <button class="btn-secondary" style="width:100%;margin-bottom:.75rem">Withdraw</button>
+          <button class="btn-secondary" style="width:100%">View Ledger</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// Portfolio Growth Chart
+const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
+new Chart(portfolioCtx, {
+  type: 'line',
+  data: {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [{
+      label: 'Portfolio Value',
+      data: [1150000, 1165000, 1180000, 1200000, 1215000, 1235000, 1250890],
+      borderColor: '#00FF88',
+      backgroundColor: 'rgba(0, 255, 136, 0.1)',
+      borderWidth: 3,
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#FFD700',
+      pointBorderColor: '#00FF88',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {legend: {display: false}},
+    scales: {
+      y: {
+        beginAtZero: false,
+        ticks: {color: '#9AA0A8'},
+        grid: {color: 'rgba(0,255,136,0.1)'},
+        border: {display: false}
+      },
+      x: {
+        ticks: {color: '#9AA0A8'},
+        grid: {display: false},
+        border: {display: false}
+      }
+    }
+  }
+});
+
+// Asset Allocation Chart
+const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+new Chart(allocationCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Forex', 'Crypto', 'Equities', 'Cash'],
+    datasets: [{
+      data: [35, 30, 25, 10],
+      backgroundColor: ['#00FF88', '#FFD700', '#FF6B35', '#FFED4E'],
+      borderColor: '#0F1419',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {color: '#9AA0A8', padding: 20}
+      }
+    }
+  }
+});
+
+// Responsive buttons
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    this.style.transition = 'all 0.2s';
+    this.style.transform = 'scale(0.98)';
+    setTimeout(() => this.style.transform = 'scale(1)', 100);
+  });
+});
+</script>
+</body>
+</html>

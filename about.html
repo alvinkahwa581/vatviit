@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — VaTViT Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#FFD700;
+  --black:#0A0E15;
+  --surface2:#141A24;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --border:#1E2A38;
+  --green:#00FF88;
+  --orange:#FF6B35;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;font-size:16px;line-height:1.6}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);border-bottom:2px solid rgba(0,255,136,.2);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,215,0,.3)}
+
+/* ── CONTENT ── */
+main{margin-top:64px;padding:4rem 6vw}
+
+h1{font-size:2.5rem;margin-bottom:2rem;background:linear-gradient(90deg,var(--white),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+h2{font-size:1.75rem;margin:3rem 0 1.5rem;color:var(--gold)}
+
+section{margin-bottom:3rem}
+
+.mission-box{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:2px solid rgba(0,255,136,.3);border-radius:var(--r-lg);padding:2.5rem;backdrop-filter:blur(10px);max-width:800px;margin:2rem 0}
+
+.mission-box h3{color:var(--green);margin-bottom:1rem}
+
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin:2rem 0}
+
+.team-member{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;text-align:center;backdrop-filter:blur(10px);transition:all .3s}
+
+.team-member:hover{border-color:var(--gold);transform:translateY(-3px)}
+
+.avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:2rem;color:var(--black)}
+
+.team-member h4{color:var(--green);margin-bottom:.5rem}
+
+.team-member p{color:var(--white-dim);font-size:.9rem}
+
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;margin:2rem 0}
+
+.value-card{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:var(--r-lg);padding:1.5rem;text-align:center}
+
+.value-card h3{color:var(--green);margin-bottom:1rem}
+
+.value-card p{color:var(--white-dim);line-height:1.6}
+
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;border:none;cursor:pointer;transition:all .3s}
+
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,.35)}
+
+@media(max-width:768px){
+  nav{padding:0 4vw}
+  .nav-links{display:none}
+  main{padding:2rem 4vw}
+  h1{font-size:1.75rem}
+  h2{font-size:1.25rem}
+  .team-grid{grid-template-columns:1fr}
+  .values-grid{grid-template-columns:1fr}
+  .btn-primary{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="platform.html">Platform</a>
+    <a href="compliance.html">Compliance</a>
+    <a href="brokers.html">Brokers</a>
+    <a href="about.html" style="color:var(--gold)">About</a>
+    <a href="#" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<main>
+  <h1>About VaTViT</h1>
+  <p style="font-size:1.1rem;color:var(--white-dim);max-width:700px">
+    VaTViT is a Financial Operating System built for modern traders who demand clarity, control, and institutional-grade architecture. We're reimagining trading for East Africa and beyond.
+  </p>
+
+  <section>
+    <h2>Our Mission</h2>
+    <div class="mission-box">
+      <h3>Trade with Confidence</h3>
+      <p>We believe trading should never feel like a gamble. Every platform promises features. VaTViT promises <strong>truth</strong> — an immutable ledger, automatic circuit breakers, and compliance built into the architecture from day one.</p>
+      <p style="margin-top:1rem">We're building the infrastructure that institutional traders need. From Kenya, for the world.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why VaTViT?</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <h3>Clarity First</h3>
+        <p>One unified view across all your positions. No siloed apps. No confusion. One truth.</p>
+      </div>
+      <div class="value-card">
+        <h3>Built for Compliance</h3>
+        <p>Compliance isn't an afterthought. It's woven into every layer. KYC, AML, audit trails — automatic.</p>
+      </div>
+      <div class="value-card">
+        <h3>Institutional Grade</h3>
+        <p>The architecture institutional traders expect. Immutable ledgers. Circuit breakers. Risk control.</p>
+      </div>
+      <div class="value-card">
+        <h3>Kenya-First</h3>
+        <p>Built by traders, for traders in Kenya. CMA-ready. CBK-compliant. ODPC-approved.</p>
+      </div>
+      <div class="value-card">
+        <h3>Open APIs</h3>
+        <p>Connect to any broker. NSE, Forex, Crypto, Commodities. One interface. Infinite markets.</p>
+      </div>
+      <div class="value-card">
+        <h3>Zero Compromise</h3>
+        <p>We don't compromise on security, compliance, or user experience. We build once, and build right.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Our Team</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">Experienced builders across fintech, compliance, and capital markets.</p>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="avatar">👨‍💻</div>
+        <h4>Founder & CEO</h4>
+        <p>20+ years fintech. Previously lead engineer at major African exchange.</p>
+      </div>
+      <div class="team-member">
+        <div class="avatar">👩‍⚖️</div>
+        <h4>Chief Compliance Officer</h4>
+        <p>Former CMA advisor. Expert in Kenya regulatory framework.</p>
+      </div>
+      <div class="team-member">
+        <div class="avatar">👨‍🔧</div>
+        <h4>VP Engineering</h4>
+        <p>Built systems at Stripe, Circle. Zero-downtime infrastructure specialist.</p>
+      </div>
+      <div class="team-member">
+        <div class="avatar">👩‍💼</div>
+        <h4>Head of Partnerships</h4>
+        <p>Established relationships with NSE, CBK, and 15+ brokers across Africa.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Roadmap 2026</h2>
+    <div style="background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;backdrop-filter:blur(10px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem">
+        <div>
+          <h4 style="color:var(--green);margin-bottom:.5rem">Q3 2026</h4>
+          <ul style="list-style:none;color:var(--white-dim);font-size:.9rem;line-height:2">
+            <li>✓ Ledger Engine Launch</li>
+            <li>✓ KYC / AML Integration</li>
+            <li>✓ NSE Live Trading</li>
+            <li>✓ Dashboard v1</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:var(--orange);margin-bottom:.5rem">Q4 2026</h4>
+          <ul style="list-style:none;color:var(--white-dim);font-size:.9rem;line-height:2">
+            <li>→ MT4/MT5 Integration</li>
+            <li>→ Portfolio Analytics</li>
+            <li>→ Mobile App (iOS/Android)</li>
+            <li>→ CMA Sandbox Submission</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:var(--gold);margin-bottom:.5rem">2027</h4>
+          <ul style="list-style:none;color:var(--white-dim);font-size:.9rem;line-height:2">
+            <li>→ International Broker APIs</li>
+            <li>→ Advanced Charting</li>
+            <li>→ Algo Trading Framework</li>
+            <li>→ Institutional Clients</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="text-align:center">
+    <h2>Join Us</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">We're hiring engineers, compliance specialists, and trader advocates.</p>
+    <button class="btn-primary" style="margin-right:1rem">View Open Roles</button>
+    <button class="btn-primary" style="background:transparent;color:var(--green);border:2px solid var(--green)">Contact Us</button>
+  </section>
+</main>
+
+</body>
+</html>

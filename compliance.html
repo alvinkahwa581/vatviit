@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance — VaTViT Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#FFD700;
+  --black:#0A0E15;
+  --surface2:#141A24;
+  --surface3:#1A212E;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --border:#1E2A38;
+  --green:#00FF88;
+  --orange:#FF6B35;
+  --yellow:#FFED4E;
+  --red:#E04040;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);border-bottom:2px solid rgba(0,255,136,.2);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,215,0,.3)}
+
+/* ── CONTENT ── */
+main{margin-top:64px;padding:4rem 6vw}
+
+h1{font-size:2.5rem;margin-bottom:2rem;background:linear-gradient(90deg,var(--white),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+h2{font-size:1.75rem;margin:3rem 0 1.5rem;color:var(--green)}
+
+section{margin-bottom:3rem}
+
+.compliance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin:2rem 0}
+
+.compliance-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(0,255,136,.2);border-radius:var(--r-lg);padding:2rem;backdrop-filter:blur(10px);transition:all .3s}
+
+.compliance-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,255,136,.1)}
+
+.compliance-card h3{color:var(--gold);margin-bottom:1rem;font-size:1.2rem}
+
+.compliance-card .badge{display:inline-block;background:rgba(0,255,136,.15);color:var(--green);padding:.3rem .8rem;border-radius:100px;font-size:.75rem;font-weight:700;margin-bottom:1rem;border:1px solid rgba(0,255,136,.3)}
+
+.compliance-card p{color:var(--white-dim);line-height:1.7;margin-bottom:1rem}
+
+.checklist{list-style:none;padding:0}
+
+.checklist li{padding:.5rem 0;color:var(--white-dim);display:flex;align-items:center;gap:.75rem}
+
+.checklist li::before{content:'✓';color:var(--green);font-weight:700;font-size:1.1rem}
+
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;border:none;cursor:pointer;transition:all .3s;box-shadow:0 10px 30px rgba(255,215,0,.25)}
+
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,.35)}
+
+@media(max-width:768px){
+  nav{padding:0 4vw}
+  .nav-links{display:none}
+  main{padding:2rem 4vw}
+  h1{font-size:1.75rem}
+  h2{font-size:1.25rem}
+  .compliance-grid{grid-template-columns:1fr}
+  .btn-primary{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="platform.html">Platform</a>
+    <a href="compliance.html" style="color:var(--gold)">Compliance</a>
+    <a href="brokers.html">Brokers</a>
+    <a href="about.html">About</a>
+    <a href="#" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Regulatory Compliance</h1>
+  <p style="font-size:1.1rem;color:var(--white-dim);max-width:600px">
+    Compliance isn't a feature. It's the foundation. Every module maps to a specific CMA, CBK, or ODPC requirement.
+  </p>
+
+  <section>
+    <h2>Regulatory Framework</h2>
+    <div class="compliance-grid">
+      <div class="compliance-card">
+        <div class="badge">CMA</div>
+        <h3>Capital Markets Authority</h3>
+        <p>VaTViT is designed for CMA Regulatory Sandbox entry. Our system boundary design ensures we operate as a Financial Operating System — not a broker, and not a fund manager.</p>
+        <ul class="checklist">
+          <li>Sandbox application in preparation</li>
+          <li>System boundary compliance</li>
+          <li>Capital requirements met</li>
+          <li>Annual audits scheduled</li>
+        </ul>
+      </div>
+
+      <div class="compliance-card">
+        <div class="badge">CBK</div>
+        <h3>Central Bank of Kenya</h3>
+        <p>Full compliance with CBK anti-money laundering guidelines and forex regulations.</p>
+        <ul class="checklist">
+          <li>AML transaction monitoring</li>
+          <li>Sanctions screening (CBK watchlists)</li>
+          <li>7-year document retention</li>
+          <li>Quarterly CBK reporting</li>
+        </ul>
+      </div>
+
+      <div class="compliance-card">
+        <div class="badge">ODPC</div>
+        <h3>Data Protection Act</h3>
+        <p>All personal data of Kenyan users stored in-country with full GDPR-equivalent protection.</p>
+        <ul class="checklist">
+          <li>Nairobi-region data residency</li>
+          <li>Data Processing Agreements</li>
+          <li>Right-to-erasure support</li>
+          <li>Privacy by design</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Key Compliance Modules</h2>
+    <div class="compliance-grid">
+      <div class="compliance-card">
+        <h3>📋 KYC / AML</h3>
+        <p>Smile ID integration for identity verification. Real-time AML transaction monitoring. Fully automated — no manual queues.</p>
+      </div>
+
+      <div class="compliance-card">
+        <h3>📊 Audit Trail</h3>
+        <p>Every action logged immutably. User activity, system changes, ledger transactions. 7-year retention policy.</p>
+      </div>
+
+      <div class="compliance-card">
+        <h3>🔐 Data Security</h3>
+        <p>End-to-end encryption, role-based access control, multi-factor authentication, and continuous vulnerability scanning.</p>
+      </div>
+
+      <div class="compliance-card">
+        <h3>⚖️ Legal Agreements</h3>
+        <p>Terms of service, privacy policy, and regulatory disclosures prepared by fintech-specialized legal counsel.</p>
+      </div>
+
+      <div class="compliance-card">
+        <h3>🏦 Broker Compliance</h3>
+        <p>Broker credential management, segregated account verification, and real-time position reconciliation.</p>
+      </div>
+
+      <div class="compliance-card">
+        <h3>📞 Customer Support</h3>
+        <p>Dedicated compliance support team. Response time: &lt;24 hours for regulatory queries.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Security & Encryption</h2>
+    <div class="compliance-card" style="max-width:100%;padding:2.5rem">
+      <h3>Enterprise-Grade Security</h3>
+      <ul class="checklist" style="margin-top:2rem">
+        <li>TLS 1.3 for all data in transit</li>
+        <li>AES-256 encryption for data at rest</li>
+        <li>mTLS for service-to-service communication</li>
+        <li>JWT signed tokens with RS256</li>
+        <li>OAuth 2.0 with PKCE flow</li>
+        <li>Hardware security module (HSM) for key storage</li>
+        <li>Regular penetration testing</li>
+        <li>ISO 27001 certification in progress</li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="text-align:center">
+    <h2>Regulatory Status</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">We are actively working with regulators to ensure VaTViT meets all requirements.</p>
+    <button class="btn-primary">View Compliance Report</button>
+  </section>
+</main>
+
+</body>
+</html>

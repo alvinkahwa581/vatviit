@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brokers — VaTViT Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#FFD700;
+  --black:#0A0E15;
+  --surface2:#141A24;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --green:#00FF88;
+  --orange:#FF6B35;
+  --yellow:#FFED4E;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;font-size:16px;line-height:1.6}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);border-bottom:2px solid rgba(0,255,136,.2);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,215,0,.3)}
+
+/* ── CONTENT ── */
+main{margin-top:64px;padding:4rem 6vw}
+
+h1{font-size:2.5rem;margin-bottom:2rem;background:linear-gradient(90deg,var(--white),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+h2{font-size:1.75rem;margin:3rem 0 1.5rem;color:var(--gold)}
+
+.broker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin:2rem 0}
+
+.broker-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;backdrop-filter:blur(10px);transition:all .3s;text-align:center}
+
+.broker-card:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,255,136,.15)}
+
+.broker-icon{font-size:3rem;margin-bottom:1rem}
+
+.broker-card h3{color:var(--green);margin-bottom:.5rem;font-size:1.2rem}
+
+.broker-card p{color:var(--white-dim);margin-bottom:1.5rem;line-height:1.6}
+
+.broker-specs{background:rgba(0,0,0,.2);padding:1rem;border-radius:var(--r);margin-bottom:1.5rem;font-size:.85rem;color:var(--white-dim)}
+
+.broker-specs div{padding:.25rem 0}
+
+.btn-connect{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.6rem 1.5rem;border-radius:var(--r);font-weight:700;font-size:.9rem;text-decoration:none;border:none;cursor:pointer;transition:all .3s;width:100%;display:block}
+
+.btn-connect:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,215,0,.3)}
+
+.connection-status{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+
+.status-item{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:var(--r);padding:1rem;text-align:center}
+
+.status-item h4{color:var(--green);font-size:1rem;margin-bottom:.5rem}
+
+.status-item p{color:var(--white-dim);font-size:.85rem}
+
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;border:none;cursor:pointer;transition:all .3s}
+
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,.35)}
+
+@media(max-width:768px){
+  nav{padding:0 4vw}
+  .nav-links{display:none}
+  main{padding:2rem 4vw}
+  h1{font-size:1.75rem}
+  h2{font-size:1.25rem}
+  .broker-grid{grid-template-columns:1fr}
+  .btn-connect{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="platform.html">Platform</a>
+    <a href="compliance.html">Compliance</a>
+    <a href="brokers.html" style="color:var(--gold)">Brokers</a>
+    <a href="about.html">About</a>
+    <a href="#" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Supported Brokers</h1>
+  <p style="font-size:1.1rem;color:var(--white-dim);max-width:600px">
+    Connect to any broker. Trade anywhere. The Universal Brokerage Wrapper translates between VaTViT's unified model and every broker's native protocol.
+  </p>
+
+  <section>
+    <h2>Connect Your Brokers</h2>
+    <div class="broker-grid">
+      <div class="broker-card">
+        <div class="broker-icon">📍</div>
+        <h3>Nairobi Securities Exchange</h3>
+        <p>Direct NSE integration for Kenyan equities.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> 65+ stocks</div>
+          <div><strong>Latency:</strong> &lt; 100ms</div>
+          <div><strong>Settlement:</strong> T+3</div>
+        </div>
+        <button class="btn-connect">Connect NSE Account</button>
+      </div>
+
+      <div class="broker-card">
+        <div class="broker-icon">💱</div>
+        <h3>MetaTrader 4 / 5</h3>
+        <p>28+ currency pairs. Leverage trading. FIX 4.4 protocol.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> Forex pairs</div>
+          <div><strong>Leverage:</strong> up to 1:100</div>
+          <div><strong>Protocol:</strong> FIX 4.4</div>
+        </div>
+        <button class="btn-connect">Connect MT4/MT5</button>
+      </div>
+
+      <div class="broker-card">
+        <div class="broker-icon">📊</div>
+        <h3>Interactive Brokers</h3>
+        <p>Global markets. Stocks, options, futures, crypto.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> 150,000+ instruments</div>
+          <div><strong>Regions:</strong> 30+ countries</div>
+          <div><strong>API:</strong> REST + WebSocket</div>
+        </div>
+        <button class="btn-connect">Connect IB Account</button>
+      </div>
+
+      <div class="broker-card">
+        <div class="broker-icon">₿</div>
+        <h3>Crypto Exchanges</h3>
+        <p>Bitcoin, Ethereum, 50+ altcoins. 24/7 trading.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> Major + altcoins</div>
+          <div><strong>Exchanges:</strong> Binance, Kraken</div>
+          <div><strong>Latency:</strong> Sub-second</div>
+        </div>
+        <button class="btn-connect">Connect Exchange</button>
+      </div>
+
+      <div class="broker-card">
+        <div class="broker-icon">⚱️</div>
+        <h3>Commodity Brokers</h3>
+        <p>Gold, silver, oil, natural gas. Spot + futures.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> 20+ commodities</div>
+          <div><strong>Markets:</strong> Global</div>
+          <div><strong>Hours:</strong> 24/5</div>
+        </div>
+        <button class="btn-connect">Connect Broker</button>
+      </div>
+
+      <div class="broker-card">
+        <div class="broker-icon">🤝</div>
+        <h3>Alpaca</h3>
+        <p>Commission-free stock trading API. US equities.</p>
+        <div class="broker-specs">
+          <div><strong>Assets:</strong> US stocks & ETFs</div>
+          <div><strong>Commissions:</strong> Zero</div>
+          <div><strong>API:</strong> REST + WebSocket</div>
+        </div>
+        <button class="btn-connect">Connect Alpaca</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Your Connected Brokers</h2>
+    <div class="connection-status">
+      <div class="status-item">
+        <h4>✓ NSE Account</h4>
+        <p>Connected • KES 450,000 balance • 8 positions</p>
+      </div>
+      <div class="status-item">
+        <h4>✓ MT4 Account</h4>
+        <p>Connected • USD 25,000 balance • 3 positions</p>
+      </div>
+      <div class="status-item">
+        <h4>✓ Crypto Exchange</h4>
+        <p>Connected • BTC 0.35 balance • 2 positions</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="text-align:center">
+    <h2>Can't Find Your Broker?</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">We're constantly adding new broker integrations. Request your broker below.</p>
+    <button class="btn-primary">Request Broker Integration</button>
+  </section>
+</main>
+
+</body>
+</html>

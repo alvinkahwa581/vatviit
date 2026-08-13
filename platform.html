@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform — VaTViT Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#FFD700;
+  --gold-lt:#FFED4E;
+  --gold-dim:#FFA500;
+  --black:#0A0E15;
+  --surface:#0F1419;
+  --surface2:#141A24;
+  --surface3:#1A212E;
+  --white:#F4F1E8;
+  --white-dim:#9AA0A8;
+  --white-dimmer:#4A5260;
+  --border:#1E2A38;
+  --green:#00FF88;
+  --orange:#FF6B35;
+  --yellow:#FFED4E;
+  --red:#E04040;
+  --r:8px;
+  --r-lg:14px;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95);backdrop-filter:blur(20px);border-bottom:2px solid rgba(0,255,136,.2);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
+.nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px;vertical-align:2px}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.5rem 1.25rem;border-radius:var(--r);font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,215,0,.3)}
+
+/* ── CONTENT ── */
+main{margin-top:64px;padding:4rem 6vw}
+
+h1{font-size:2.5rem;margin-bottom:2rem;background:linear-gradient(90deg,var(--white),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+h2{font-size:1.75rem;margin:3rem 0 1.5rem;color:var(--gold)}
+
+section{margin-bottom:3rem}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;margin:2rem 0}
+
+.feature-card{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;backdrop-filter:blur(10px);transition:all .3s;cursor:pointer}
+
+.feature-card:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,255,136,.15)}
+
+.feature-card h3{color:var(--green);margin-bottom:1rem;font-size:1.1rem}
+
+.feature-card p{color:var(--white-dim);line-height:1.7}
+
+.cta-group{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:700;font-size:1rem;text-decoration:none;border:none;cursor:pointer;transition:all .3s;box-shadow:0 10px 30px rgba(255,215,0,.25)}
+
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(255,215,0,.35)}
+
+.btn-secondary{background:transparent;color:var(--green);border:2px solid var(--green);padding:.8rem 1.9rem;border-radius:var(--r);font-weight:600;font-size:1rem;text-decoration:none;cursor:pointer;transition:all .2s}
+
+.btn-secondary:hover{background:rgba(0,255,136,.1);transform:translateY(-2px)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:0 4vw}
+  .nav-links{display:none}
+  main{padding:2rem 4vw}
+  h1{font-size:1.75rem}
+  h2{font-size:1.25rem}
+  .feature-grid{grid-template-columns:1fr}
+  .cta-group{flex-direction:column}
+  .btn-primary,.btn-secondary{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="platform.html" style="color:var(--gold)">Platform</a>
+    <a href="compliance.html">Compliance</a>
+    <a href="brokers.html">Brokers</a>
+    <a href="about.html">About</a>
+    <a href="#" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<main>
+  <h1>The VaTViT Platform</h1>
+  <p style="font-size:1.1rem;color:var(--white-dim);max-width:600px">
+    Institutional-grade architecture designed from the ground up for compliance, clarity, and capital control.
+  </p>
+
+  <section>
+    <h2>Core Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>📊 Real-Time Markets</h3>
+        <p>Live market data from 4+ asset classes normalized into one unified data model. No latency. No gaps.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📒 Immutable Ledger</h3>
+        <p>Every transaction recorded as an append-only double-entry ledger. SHA-256 chained. Auditable forever.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🛡️ Circuit Breaker</h3>
+        <p>Automatic risk control. A 1-cent discrepancy between ledger and broker halts transactions immediately.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔗 Universal Wrapper</h3>
+        <p>One interface speaks FIX, REST, and WebSocket to NSE, Forex, Crypto, and International brokers.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📈 Portfolio P&L</h3>
+        <p>Real-time mark-to-market across all asset classes. One NAV. One truth. Across all positions.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔐 Enterprise Security</h3>
+        <p>mTLS encryption, JWT authentication, OAuth 2.0, role-based access control, and audit trails.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Technical Architecture</h2>
+    <div class="feature-card" style="max-width:100%;padding:2.5rem">
+      <h3>FinOS Layer Model</h3>
+      <div style="margin-top:2rem;font-family:monospace;color:var(--white-dim);line-height:2">
+        <div style="color:var(--green)">┌─ Client Interface (React Native · Next.js)</div>
+        <div style="color:var(--green)">│  └─ JWT · OAuth 2.0 · mTLS</div>
+        <div style="color:var(--gold)">├─ API Gateway</div>
+        <div style="color:var(--gold)">│  └─ Rate Limiting · Request Routing</div>
+        <div style="color:var(--orange)">├─ FinOS Core</div>
+        <div style="color:var(--orange)">│  ├─ Ledger Engine</div>
+        <div style="color:var(--orange)">│  ├─ Trade Engine</div>
+        <div style="color:var(--orange)">│  └─ P&L Calculator</div>
+        <div style="color:var(--yellow)">├─ Compliance Layer</div>
+        <div style="color:var(--yellow)">│  ├─ KYC / AML</div>
+        <div style="color:var(--yellow)">│  ├─ Sanctions Screening</div>
+        <div style="color:var(--yellow)">│  └─ Audit Trail</div>
+        <div style="color:var(--green)">├─ Data Fabric</div>
+        <div style="color:var(--green)">│  ├─ PostgreSQL (Primary)</div>
+        <div style="color:var(--green)">│  ├─ Redis (Cache)</div>
+        <div style="color:var(--green)">│  └─ Kafka (Events)</div>
+        <div style="color:var(--gold)">└─ Brokerage Wrapper</div>
+        <div style="color:var(--gold)">   ├─ NSE · MT4/5 · Interactive Brokers</div>
+        <div style="color:var(--gold)">   └─ Crypto WebSocket Feeds</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trading Markets</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">Connect to your brokers and trade across multiple asset classes in one unified interface.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>📍 Equities</h3>
+        <p>Nairobi Securities Exchange (NSE) via direct NSE integration. Live order routing. Real-time settlement.</p>
+      </div>
+      <div class="feature-card">
+        <h3>💱 Forex</h3>
+        <p>28 major currency pairs. Leverage up to 1:100. Direct MT4/MT5 integration via FIX 4.4.</p>
+      </div>
+      <div class="feature-card">
+        <h3>₿ Crypto</h3>
+        <p>Bitcoin, Ethereum, and 50+ altcoins. 24/7 markets. Sub-second order execution.</p>
+      </div>
+      <div class="feature-card">
+        <h3>⚱️ Commodities</h3>
+        <p>Gold, silver, oil, natural gas. Spot and futures. Real-time price feeds.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Get Started</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem;max-width:600px">
+      Join the early-access waitlist and be among the first to experience the future of trading.
+    </p>
+    <div class="cta-group">
+      <button class="btn-primary">Request Early Access</button>
+      <button class="btn-secondary">Watch Demo</button>
+      <button class="btn-secondary">Read Docs</button>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
