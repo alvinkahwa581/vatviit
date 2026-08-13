@@ -62,42 +62,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.85
 
 /* ── HERO ── */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 6vw 80px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--black) 0%,#1a1a2e 50%,var(--black) 100%)}
-.hero-grid-bg{position:absolute;inset:0;background-image:
-  radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-  radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
-  radial-gradient(circle at 40% 20%, rgba(255, 237, 78, 0.08) 0%, transparent 50%),
-  linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.03) 50%, transparent 100%);
-background-size: 200% 200%, 200% 200%, 200% 200%, 100% 100%;
-animation: gridFlow 15s ease-in-out infinite, gridShift 20s linear infinite;
-opacity:0.6;
-}
-@keyframes gridFlow{
-  0%{background-position: 0% 0%, 100% 100%, 50% 0%, 0% 0%}
-  50%{background-position: 100% 100%, 0% 0%, 50% 100%, 50% 50%}
-  100%{background-position: 0% 0%, 100% 100%, 50% 0%, 0% 0%}
-}
-@keyframes gridShift{
-  0%{background-position: 0% 0%, 100% 100%, 50% 0%, 0% 0%}
-  100%{background-position: 100% 0%, 100% 100%, 50% 0%, 100% 0%}
-}
-.hero-grid-bg::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(0deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 107, 53, 0.05) 1px, transparent 1px),
-    linear-gradient(45deg, rgba(255, 237, 78, 0.04) 1px, transparent 1px),
-    linear-gradient(-45deg, rgba(255, 215, 0, 0.04) 1px, transparent 1px);
-  background-size: 80px 80px, 80px 80px, 120px 120px, 120px 120px;
-  animation: dataGridPulse 3s ease-in-out infinite;
-  opacity:0.4;
-}
-@keyframes dataGridPulse{
-  0%{opacity:0.2}
-  50%{opacity:0.5}
-  100%{opacity:0.2}
-}
+.hero-grid-bg{display:none}
 .hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(0,255,136,.15) 0%,transparent 40%),radial-gradient(ellipse,rgba(255,107,53,.12) 20%,transparent 60%);pointer-events:none;animation:glowPulse 4s ease-in-out infinite}
 @keyframes glowPulse{
   0%{opacity:0.8;transform:translateX(-50%) scale(1)}
