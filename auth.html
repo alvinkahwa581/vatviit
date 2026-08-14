@@ -301,6 +301,71 @@
     }
     .social-btn.google .social-mark { color: #EA4335; }
     .social-btn.apple .social-mark { color: var(--white); }
+    .social-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 12, 0.68);
+      backdrop-filter: blur(8px);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      z-index: 50;
+    }
+    .social-modal.hidden {
+      display: none;
+    }
+    .social-modal-card {
+      width: min(420px, 100%);
+      background: linear-gradient(135deg, rgba(15,20,25,0.98), rgba(20,26,36,0.96));
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.42);
+      padding: 28px 24px;
+    }
+    .social-modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .social-modal-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px rgba(255,215,0,0.7);
+    }
+    .social-modal-card h3 {
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      margin-bottom: 8px;
+    }
+    .social-modal-card p {
+      color: var(--white-dim);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .social-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    .ghost-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 0.8rem 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ghost-btn:hover { border-color: rgba(255,255,255,0.2); }
     .divider {
       display: flex;
       align-items: center;
@@ -344,6 +409,18 @@
 </head>
 <body>
   <a class="top-link" href="index.html">← Back to home</a>
+  <div class="social-modal hidden" id="socialModal" aria-live="polite">
+    <div class="social-modal-card">
+      <div class="social-modal-badge">Secure access</div>
+      <h3 id="socialModalTitle">Continue with Google</h3>
+      <p id="socialModalText">You are about to enter your trader workspace. Continue to your dashboard.</p>
+      <div class="social-modal-actions">
+        <button type="button" class="ghost-btn" id="cancelSocial">Cancel</button>
+        <button type="button" class="primary-btn" id="continueSocial">Continue</button>
+      </div>
+    </div>
+  </div>
+
   <div class="page-shell">
     <div class="auth-card">
       <div class="auth-copy">
@@ -482,6 +559,19 @@
       localStorage.setItem('vatvit_current_user', JSON.stringify(user));
     }
 
+    let selectedProvider = 'Google';
+
+    function openSocialModal(provider) {
+      selectedProvider = provider || 'Google';
+      const modal = document.getElementById('socialModal');
+      const title = document.getElementById('socialModalTitle');
+      const text = document.getElementById('socialModalText');
+
+      title.textContent = `Continue with ${selectedProvider}`;
+      text.textContent = `You are about to access your ${selectedProvider} trader workspace. Continue to your dashboard.`;
+      modal.classList.remove('hidden');
+    }
+
     function handleSocialLogin(provider) {
       const providerName = provider || 'Trader';
       const demoUser = {
@@ -499,8 +589,17 @@
     document.querySelectorAll('.social-btn').forEach((button) => {
       button.addEventListener('click', () => {
         const provider = button.dataset.provider || 'Google';
-        handleSocialLogin(provider);
+        openSocialModal(provider);
       });
+    });
+
+    document.getElementById('cancelSocial').addEventListener('click', () => {
+      document.getElementById('socialModal').classList.add('hidden');
+    });
+
+    document.getElementById('continueSocial').addEventListener('click', () => {
+      document.getElementById('socialModal').classList.add('hidden');
+      handleSocialLogin(selectedProvider);
     });
 
     async function loginUser(email, password) {
