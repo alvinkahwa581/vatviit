@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaTViT | Welcome</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root{ --gold:#FFD700; --gold-lt:#FFED4E; --black:#0A0E15; --surface:#0F1419; --white:#F4F1E8; --white-dim:#9AA0A8; --border:#1E2A38; --green:#00FF88; --orange:#FF6B35; }
+    body{ font-family: Calibri, sans-serif; background: linear-gradient(135deg,#0a0e15,#111827 50%, #0f1419); min-height:100vh; display:grid; place-items:center; padding:24px; color: var(--white); }
+    .card{ width:min(560px,100%); background: rgba(15,20,25,.9); border:1px solid var(--border); border-radius:20px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:hidden; }
+    .header{ background: linear-gradient(135deg, rgba(0,255,136,.12), rgba(255,215,0,.12)); border-bottom:1px solid var(--border); padding: 24px; }
+    .badge{ display:inline-flex; align-items:center; gap:8px; font-size:.7rem; letter-spacing:.12em; text-transform: uppercase; color: var(--green); font-weight:700; }
+    .badge::before{ content:""; width:8px; height:8px; border-radius:50%; background: var(--green); }
+    h1{ font-size: clamp(2.2rem, 5vw, 3rem); margin-top: 14px; }
+    .body{ padding: 24px; }
+    p{ line-height:1.7; color: var(--white-dim); margin-bottom: 20px; }
+    .actions{ display:flex; gap:12px; flex-wrap:wrap; }
+    .primary, .secondary{ flex:1; min-width: 180px; border-radius:10px; border:0; font-weight:800; padding: 0.95rem 1rem; cursor:pointer; }
+    .primary{ background: linear-gradient(135deg,var(--gold),var(--orange)); color: var(--black); }
+    .secondary{ background: rgba(255,255,255,.02); border:1px solid var(--border); color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="badge">Welcome</div>
+      <h1>You’re in.</h1>
+    </div>
+    <div class="body">
+      <p>Your VaTViT account has been created successfully. You can now continue to the secure workspace and begin exploring your portfolio, compliance, and market intelligence.</p>
+      <div class="actions">
+        <button class="primary" type="button" onclick="location.href='dashboard.html'">Go to dashboard</button>
+        <button class="secondary" type="button" onclick="location.href='index.html'">Back home</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

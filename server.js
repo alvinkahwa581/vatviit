@@ -144,6 +144,18 @@ app.get('/auth', (req, res) => {
   res.sendFile(path.join(__dirname, 'auth.html'));
 });
 
+app.get('/forgot-password', (req, res) => {
+  res.sendFile(path.join(__dirname, 'forgot-password.html'));
+});
+
+app.get('/verify-email', (req, res) => {
+  res.sendFile(path.join(__dirname, 'verify-email.html'));
+});
+
+app.get('/welcome', (req, res) => {
+  res.sendFile(path.join(__dirname, 'welcome.html'));
+});
+
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/')) return next();
   res.sendFile(path.join(__dirname, 'index.html'));

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaTViT | Verify Email</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root{ --gold:#FFD700; --gold-lt:#FFED4E; --black:#0A0E15; --surface:#0F1419; --white:#F4F1E8; --white-dim:#9AA0A8; --border:#1E2A38; --orange:#FF6B35; --green:#00FF88; }
+    body{ font-family: Calibri, sans-serif; background: linear-gradient(135deg,#0a0e15,#111827 50%,#0f1419); min-height:100vh; display:grid; place-items:center; padding:24px; color: var(--white); }
+    .card{ width:min(560px,100%); background: rgba(15,20,25,.9); border:1px solid var(--border); border-radius:20px; box-shadow:0 30px 80px rgba(0,0,0,.35); overflow:hidden; }
+    .header{ padding: 24px; background: linear-gradient(135deg, rgba(0,255,136,.12), rgba(255,215,0,.12)); border-bottom:1px solid var(--border); }
+    .badge{ display:inline-flex; align-items:center; gap:8px; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color: var(--green); font-weight:700; }
+    .badge::before{ content:""; width:8px; height:8px; border-radius:50%; background: var(--green); }
+    h1{ font-size: clamp(2rem, 5vw, 2.8rem); margin-top: 14px; }
+    .body{ padding: 24px; }
+    p{ line-height:1.7; color: var(--white-dim); margin-bottom: 18px; }
+    .primary{ width:100%; border:0; border-radius:10px; background: linear-gradient(135deg,var(--gold),var(--orange)); color: var(--black); font-weight:800; padding: 0.95rem 1rem; cursor:pointer; }
+    .links{ display:flex; justify-content:space-between; gap:12px; margin-top: 16px; font-size:.85rem; }
+    .links a{ color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="badge">Verification</div>
+      <h1>Check your email</h1>
+    </div>
+    <div class="body">
+      <p>We’ve sent a verification link to your email. Please confirm your address to activate your VaTViT account and continue to your workspace.</p>
+      <button class="primary" type="button" onclick="location.href='welcome.html'">Continue</button>
+      <div class="links">
+        <a href="auth.html">Back to log in</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

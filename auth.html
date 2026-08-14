@@ -386,7 +386,7 @@
             <label class="remember"><input type="checkbox" /> Remember me</label>
             <button class="primary-btn" type="submit">Log In</button>
           </div>
-          <div class="meta-link"><a href="#">Forgot password?</a></div>
+          <div class="meta-link"><a href="forgot-password.html">Forgot password?</a></div>
         </form>
 
         <form class="auth-form" id="signup-panel" novalidate>
@@ -504,7 +504,7 @@
       }
 
       alert(result.message);
-      window.location.href = '/dashboard';
+      window.location.href = 'welcome.html';
     });
 
     document.getElementById('signup-panel').addEventListener('submit', async function (event) {
@@ -543,7 +543,7 @@
       }
 
       alert(result.message);
-      window.location.href = '/dashboard';
+      window.location.href = 'verify-email.html';
     });
   </script>
 </body>
