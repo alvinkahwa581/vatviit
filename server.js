@@ -13,15 +13,6 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json');
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
-
-app.get('/', (req, res) => {
-  res.redirect('/auth');
-});
-
-app.get('/index.html', (req, res) => {
-  res.redirect('/auth');
-});
-
 app.use(express.static(__dirname));
 
 async function ensureStorage() {
