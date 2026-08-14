@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaTViT | Member Access</title>
+  <meta name="description" content="Log in or sign up to VaTViT securely.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root{
+      --gold:#FFD700;
+      --gold-lt:#FFED4E;
+      --gold-dim:#FFA500;
+      --gold-bg:#FFD70020;
+      --gold-border:#FFD70040;
+      --black:#0A0E15;
+      --surface:#0F1419;
+      --surface2:#141A24;
+      --surface3:#1A212E;
+      --white:#F4F1E8;
+      --white-dim:#9AA0A8;
+      --white-dimmer:#4A5260;
+      --border:#1E2A38;
+      --border-bright:#2A3848;
+      --green:#00FF88;
+      --red:#E04040;
+      --orange:#FF6B35;
+      --r:12px;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: Calibri, sans-serif;
+      background: radial-gradient(circle at top, rgba(255,215,0,.12), transparent 20%), linear-gradient(135deg, #0a0e15 0%, #111827 100%);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page-shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+    .auth-card {
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      background: rgba(15,20,25,.85);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+      backdrop-filter: blur(16px);
+    }
+    .auth-copy {
+      background: linear-gradient(135deg, rgba(20,26,36,0.9), rgba(26,33,46,0.9));
+      padding: 44px 38px;
+      border-right: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 18px rgba(255,215,0,.7);
+    }
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      line-height: 1.06;
+      margin-bottom: 18px;
+      letter-spacing: -0.04em;
+    }
+    .auth-copy p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--white-dim);
+      max-width: 36ch;
+      margin-bottom: 28px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .feature-box {
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .feature-box strong {
+      display: block;
+      color: var(--gold);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .feature-box span {
+      color: var(--white-dim);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .auth-panel {
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(15,20,25,.96), rgba(20,26,36,.96));
+    }
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+      margin-bottom: 20px;
+    }
+    .auth-tab {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--white-dim);
+      font-weight: 700;
+      padding: 12px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: var(--black);
+      box-shadow: 0 10px 20px rgba(255,215,0,.18);
+    }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .auth-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      color: var(--white-dimmer);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    input {
+      width: 100%;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      color: var(--white);
+      font-size: 0.96rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    input:focus {
+      border-color: rgba(255,215,0,.75);
+      box-shadow: 0 0 0 3px rgba(255,215,0,.12);
+    }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 3.2rem; }
+    .password-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 6px 7px;
+      border-radius: 6px;
+    }
+    .auth-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--white-dim);
+      font-size: 0.85rem;
+    }
+    .remember input { accent-color: var(--gold); width: auto; }
+    .primary-btn {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: var(--black);
+      border: 0;
+      border-radius: 10px;
+      padding: 0.9rem 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 22px rgba(255,215,0,.18);
+    }
+    .primary-btn:hover { transform: translateY(-2px); }
+    .meta-link {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--white-dim);
+      font-size: 0.8rem;
+    }
+    .meta-link a { color: var(--gold); }
+    .top-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: var(--white);
+      opacity: 0.9;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 860px) {
+      .auth-card { grid-template-columns: 1fr; }
+      .auth-copy { border-right: 0; border-bottom: 1px solid var(--border); }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .page-shell { padding: 18px 14px; }
+      .auth-copy, .auth-panel { padding: 22px 18px; }
+      .feature-grid, .auth-form-grid { grid-template-columns: 1fr; }
+      .auth-row { align-items: stretch; }
+      .primary-btn { width: 100%; }
+      .remember { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a class="top-link" href="index.html">← Back to home</a>
+  <div class="page-shell">
+    <div class="auth-card">
+      <div class="auth-copy">
+        <div class="brand"><span class="brand-mark"></span> VaTViT Member Access</div>
+        <h1>Access your workspace.</h1>
+        <p>Sign in to monitor positions, review market intelligence, and keep track of compliance activity from one secure dashboard.</p>
+        <div class="feature-grid">
+          <div class="feature-box">
+            <strong>Secure</strong>
+            <span>Protected access with institutional-grade session controls.</span>
+          </div>
+          <div class="feature-box">
+            <strong>Live</strong>
+            <span>See portfolio movement and market updates in real time.</span>
+          </div>
+          <div class="feature-box">
+            <strong>Compliant</strong>
+            <span>Built around KYC, AML, and audit-first operational visibility.</span>
+          </div>
+          <div class="feature-box">
+            <strong>Fast</strong>
+            <span>Join or sign in in under a minute.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-panel">
+        <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+          <button class="auth-tab active" type="button" data-target="login-panel">Log In</button>
+          <button class="auth-tab" type="button" data-target="signup-panel">Sign Up</button>
+        </div>
+
+        <form class="auth-form active" id="login-panel" novalidate>
+          <div class="auth-form-grid">
+            <div class="field full">
+              <label for="login-email">Email address</label>
+              <input id="login-email" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="field full">
+              <label for="login-password">Password</label>
+              <div class="password-wrap">
+                <input id="login-password" type="password" placeholder="Enter your password" />
+                <button type="button" class="password-toggle" data-target="login-password">Show</button>
+              </div>
+            </div>
+          </div>
+          <div class="auth-row">
+            <label class="remember"><input type="checkbox" /> Remember me</label>
+            <button class="primary-btn" type="submit">Log In</button>
+          </div>
+          <div class="meta-link"><a href="#">Forgot password?</a></div>
+        </form>
+
+        <form class="auth-form" id="signup-panel" novalidate>
+          <div class="auth-form-grid">
+            <div class="field">
+              <label for="signup-name">Full name</label>
+              <input id="signup-name" type="text" placeholder="Your name" />
+            </div>
+            <div class="field">
+              <label for="signup-phone">Phone</label>
+              <input id="signup-phone" type="tel" placeholder="0712 345 678" />
+            </div>
+            <div class="field full">
+              <label for="signup-email">Email address</label>
+              <input id="signup-email" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label for="signup-password">Password</label>
+              <div class="password-wrap">
+                <input id="signup-password" type="password" placeholder="Create password" />
+                <button type="button" class="password-toggle" data-target="signup-password">Show</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="signup-confirm">Confirm password</label>
+              <div class="password-wrap">
+                <input id="signup-confirm" type="password" placeholder="Repeat password" />
+                <button type="button" class="password-toggle" data-target="signup-confirm">Show</button>
+              </div>
+            </div>
+          </div>
+          <div class="auth-row">
+            <span class="remember">Join the early-access list</span>
+            <button class="primary-btn" type="submit">Create Account</button>
+          </div>
+          <div class="meta-link">Already a member? <a href="#login-panel">Log in here</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.auth-tab');
+    const forms = document.querySelectorAll('.auth-form');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(item => item.classList.toggle('active', item === tab));
+        forms.forEach(form => form.classList.toggle('active', form.id === tab.dataset.target));
+      });
+    });
+
+    document.querySelectorAll('.password-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = document.getElementById(button.dataset.target);
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        button.textContent = isPassword ? 'Hide' : 'Show';
+      });
+    });
+
+    function saveAuthSession(token, user) {
+      localStorage.setItem('vatvit_token', token);
+      localStorage.setItem('vatvit_current_user', JSON.stringify(user));
+    }
+
+    async function loginUser(email, password) {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        return { ok: false, message: data.message || 'Login failed.' };
+      }
+      saveAuthSession(data.token, data.user);
+      return { ok: true, message: data.message };
+    }
+
+    async function registerUser(payload) {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        return { ok: false, message: data.message || 'Registration failed.' };
+      }
+      saveAuthSession(data.token, data.user);
+      return { ok: true, message: data.message };
+    }
+
+    document.getElementById('login-panel').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const submit = this.querySelector('.primary-btn');
+
+      if (!email || !password) {
+        alert('Please enter your email and password.');
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Signing in...';
+
+      const result = await loginUser(email, password);
+      if (!result.ok) {
+        alert(result.message);
+        submit.disabled = false;
+        submit.textContent = 'Log In';
+        return;
+      }
+
+      alert(result.message);
+      window.location.href = '/dashboard';
+    });
+
+    document.getElementById('signup-panel').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const phone = document.getElementById('signup-phone').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+      const submit = this.querySelector('.primary-btn');
+
+      if (!name || !phone || !email || !password || !confirmPassword) {
+        alert('Please complete all sign-up fields.');
+        return;
+      }
+
+      if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Creating...';
+
+      const result = await registerUser({ name, phone, email, password });
+      if (!result.ok) {
+        alert(result.message);
+        submit.disabled = false;
+        submit.textContent = 'Create Account';
+        return;
+      }
+
+      alert(result.message);
+      window.location.href = '/dashboard';
+    });
+  </script>
+</body>
+</html>
