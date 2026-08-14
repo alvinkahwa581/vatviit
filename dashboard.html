@@ -346,70 +346,72 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95
 </div>
 
 <script>
-// Portfolio Growth Chart
-const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
-new Chart(portfolioCtx, {
-  type: 'line',
-  data: {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [{
-      label: 'Portfolio Value',
-      data: [1150000, 1165000, 1180000, 1200000, 1215000, 1235000, 1250890],
-      borderColor: '#00FF88',
-      backgroundColor: 'rgba(0, 255, 136, 0.1)',
-      borderWidth: 3,
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: '#FFD700',
-      pointBorderColor: '#00FF88',
-      pointRadius: 5,
-      pointHoverRadius: 7
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {legend: {display: false}},
-    scales: {
-      y: {
-        beginAtZero: false,
-        ticks: {color: '#9AA0A8'},
-        grid: {color: 'rgba(0,255,136,0.1)'},
-        border: {display: false}
-      },
-      x: {
-        ticks: {color: '#9AA0A8'},
-        grid: {display: false},
-        border: {display: false}
+if (window.Chart) {
+  // Portfolio Growth Chart
+  const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
+  new Chart(portfolioCtx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Portfolio Value',
+        data: [1150000, 1165000, 1180000, 1200000, 1215000, 1235000, 1250890],
+        borderColor: '#00FF88',
+        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#FFD700',
+        pointBorderColor: '#00FF88',
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {legend: {display: false}},
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: {color: '#9AA0A8'},
+          grid: {color: 'rgba(0,255,136,0.1)'},
+          border: {display: false}
+        },
+        x: {
+          ticks: {color: '#9AA0A8'},
+          grid: {display: false},
+          border: {display: false}
+        }
       }
     }
-  }
-});
+  });
 
-// Asset Allocation Chart
-const allocationCtx = document.getElementById('allocationChart').getContext('2d');
-new Chart(allocationCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['Forex', 'Crypto', 'Equities', 'Cash'],
-    datasets: [{
-      data: [35, 30, 25, 10],
-      backgroundColor: ['#00FF88', '#FFD700', '#FF6B35', '#FFED4E'],
-      borderColor: '#0F1419',
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: {color: '#9AA0A8', padding: 20}
+  // Asset Allocation Chart
+  const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+  new Chart(allocationCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Forex', 'Crypto', 'Equities', 'Cash'],
+      datasets: [{
+        data: [35, 30, 25, 10],
+        backgroundColor: ['#00FF88', '#FFD700', '#FF6B35', '#FFED4E'],
+        borderColor: '#0F1419',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {color: '#9AA0A8', padding: 20}
+        }
       }
     }
-  }
-});
+  });
+}
 
 // Responsive buttons
 document.querySelectorAll('button').forEach(btn => {
