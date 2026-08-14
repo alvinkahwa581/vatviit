@@ -429,6 +429,11 @@
   </div>
 
   <script>
+    const existingToken = localStorage.getItem('vatvit_token');
+    if (existingToken) {
+      window.location.href = 'dashboard.html';
+    }
+
     const tabs = document.querySelectorAll('.auth-tab');
     const forms = document.querySelectorAll('.auth-form');
 

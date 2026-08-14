@@ -17,6 +17,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="VaTViT — Trading Platform for Modern Markets">
 <meta name="twitter:description" content="VaTViT brings institutional-grade insights, real-time market intelligence, and calm risk control into one elegant trading workspace.">
+<script>
+  if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    const signedIn = localStorage.getItem('vatvit_token');
+    window.location.replace(signedIn ? 'dashboard.html' : 'auth.html');
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
