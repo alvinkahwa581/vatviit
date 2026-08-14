@@ -52,6 +52,11 @@ body{background:var(--black);color:var(--white);font-family:Calibri,sans-serif;f
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.dev-banner{position:fixed;top:64px;left:0;right:0;z-index:99;background:linear-gradient(90deg,rgba(255,215,0,.12),rgba(0,255,136,.12));border-bottom:1px solid rgba(255,215,0,.25);padding:.9rem 6vw;text-align:center;backdrop-filter:blur(18px)}
+.dev-banner-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
+.dev-pill{display:inline-flex;align-items:center;justify-content:center;padding:.35rem .8rem;border-radius:999px;background:rgba(10,14,21,.7);border:1px solid rgba(255,215,0,.4);color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.dev-copy{font-size:.82rem;color:var(--white);font-weight:600;letter-spacing:.04em}
+.dev-copy strong{color:var(--gold);font-size:.88rem;text-transform:uppercase}
 .nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
 .nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px;vertical-align:2px;font-family:Calibri,sans-serif}
 .nav-links{display:flex;align-items:center;gap:2rem}
@@ -288,6 +293,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 </head>
 <body>
 
+<!-- DEV BANNER -->
+<div class="dev-banner">
+  <div class="dev-banner-inner">
+    <span class="dev-pill">Under Development</span>
+    <div class="dev-copy"><strong>The Future of Trading is Here</strong> — Thank you for your patience. This platform is currently being worked on by the VaTViT team.</div>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
@@ -302,7 +315,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 </nav>
 
 <!-- TICKER -->
-<div class="ticker" style="margin-top:64px">
+<div class="ticker" style="margin-top:128px">
   <div class="ticker-inner">
     <span class="tick-item"><span class="tick-sym">NSE:SCOM</span> KES 18.45 <span class="tick-up">▲ +1.23%</span></span>
     <span class="tick-item"><span class="tick-sym">NSE:KCB</span> KES 42.10 <span class="tick-up">▲ +0.87%</span></span>
@@ -646,6 +659,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
     </div>
   </div>
   <div class="footer-bottom">
+    <span>Thank you for your patience. For enquiries and suggestions, contact <a href="tel:0724862593" style="color:var(--gold);text-decoration:none">0724862593</a>.</span>
+    <span>By Chief Development Officer ALVIN KAHWAI and Tester IAN GITONGA.</span>
     <span>© 2026 VaTViT Ltd. All rights reserved. Nairobi, Kenya.</span>
   </div>
 </footer>
