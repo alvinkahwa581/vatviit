@@ -298,6 +298,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 .auth-field label{font-size:.7rem;color:var(--white-dimmer);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .auth-field input{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--border-bright);border-radius:10px;padding:.9rem 1rem;color:var(--white);font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s}
 .auth-field input:focus{border-color:rgba(255,215,0,.7);box-shadow:0 0 0 3px rgba(255,215,0,.12)}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:3.25rem}
+.password-toggle{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--gold);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:.35rem .5rem;border-radius:6px}
+.password-toggle:hover{background:rgba(255,215,0,.08)}
 .auth-actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem;flex-wrap:wrap}
 .auth-remember{display:flex;align-items:center;gap:.5rem;color:var(--white-dim);font-size:.85rem}
 .auth-remember input{accent-color:var(--gold)}
@@ -674,7 +678,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
           </div>
           <div class="auth-field full">
             <label for="login-password">Password</label>
-            <input id="login-password" type="password" placeholder="Enter your password" />
+            <div class="password-wrap">
+              <input id="login-password" type="password" placeholder="Enter your password" />
+              <button type="button" class="password-toggle" data-target="login-password" aria-label="Show password">Show</button>
+            </div>
           </div>
         </div>
         <div class="auth-actions">
@@ -700,11 +707,17 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
           </div>
           <div class="auth-field">
             <label for="signup-password">Password</label>
-            <input id="signup-password" type="password" placeholder="Create password" />
+            <div class="password-wrap">
+              <input id="signup-password" type="password" placeholder="Create password" />
+              <button type="button" class="password-toggle" data-target="signup-password" aria-label="Show password">Show</button>
+            </div>
           </div>
           <div class="auth-field">
             <label for="signup-confirm">Confirm password</label>
-            <input id="signup-confirm" type="password" placeholder="Repeat password" />
+            <div class="password-wrap">
+              <input id="signup-confirm" type="password" placeholder="Repeat password" />
+              <button type="button" class="password-toggle" data-target="signup-confirm" aria-label="Show password">Show</button>
+            </div>
           </div>
         </div>
         <div class="auth-actions">
@@ -789,6 +802,16 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 const tabs = document.querySelectorAll('.auth-tab');
 const forms = document.querySelectorAll('.auth-form');
 
+document.querySelectorAll('.password-toggle').forEach(button => {
+  button.addEventListener('click', () => {
+    const input = document.getElementById(button.dataset.target);
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    button.textContent = isPassword ? 'Hide' : 'Show';
+    button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+  });
+});
+
 const storageKey = 'vatvit_users';
 
 function saveAuthSession(token, user) {
@@ -832,6 +855,16 @@ tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(item => item.classList.toggle('active', item === tab));
     forms.forEach(form => form.classList.toggle('active', form.id === tab.dataset.target));
+  });
+});
+
+document.querySelectorAll('.password-toggle').forEach(button => {
+  button.addEventListener('click', () => {
+    const input = document.getElementById(button.dataset.target);
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    button.textContent = isPassword ? 'Hide' : 'Show';
+    button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
   });
 });
 
