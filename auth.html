@@ -272,17 +272,35 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(255,255,255,.02);
-      color: var(--white-dim);
-      padding: 12px 10px;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color: var(--white);
+      padding: 12px 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: border-color .2s ease, transform .2s ease;
+      transition: all .2s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
-    .social-btn:hover { border-color: var(--gold-border); transform: translateY(-1px); }
+    .social-btn:hover {
+      border-color: rgba(255,215,0,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .social-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .social-btn.google .social-mark { color: #EA4335; }
+    .social-btn.apple .social-mark { color: var(--white); }
     .divider {
       display: flex;
       align-items: center;
@@ -363,8 +381,14 @@
         </div>
 
         <div class="socials">
-          <button class="social-btn" type="button">Google</button>
-          <button class="social-btn" type="button">Apple</button>
+          <button class="social-btn google" type="button" data-provider="Google">
+            <span class="social-mark">G</span>
+            <span>Google</span>
+          </button>
+          <button class="social-btn apple" type="button" data-provider="Apple">
+            <span class="social-mark"></span>
+            <span>Apple</span>
+          </button>
         </div>
         <div class="divider">or continue with email</div>
 
@@ -457,6 +481,27 @@
       localStorage.setItem('vatvit_token', token);
       localStorage.setItem('vatvit_current_user', JSON.stringify(user));
     }
+
+    function handleSocialLogin(provider) {
+      const providerName = provider || 'Trader';
+      const demoUser = {
+        id: `${providerName.toLowerCase()}-member-${Date.now()}`,
+        name: `${providerName} Trader`,
+        email: `trader@${providerName.toLowerCase()}.account`,
+        phone: '+254700000000'
+      };
+
+      const demoToken = `demo-${providerName.toLowerCase()}-${Date.now()}`;
+      saveAuthSession(demoToken, demoUser);
+      window.location.href = 'dashboard.html';
+    }
+
+    document.querySelectorAll('.social-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const provider = button.dataset.provider || 'Google';
+        handleSocialLogin(provider);
+      });
+    });
 
     async function loginUser(email, password) {
       const response = await fetch('/api/login', {
