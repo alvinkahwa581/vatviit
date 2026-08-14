@@ -120,6 +120,34 @@
       justify-content: center;
       background: linear-gradient(135deg, rgba(15,20,25,.96), rgba(20,26,36,.96));
     }
+    .mini-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+      color: var(--white-dim);
+      font-size: 0.8rem;
+    }
+    .mini-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(0,255,136,.25);
+      border-radius: 999px;
+      background: rgba(0,255,136,.08);
+      color: var(--green);
+      font-weight: 700;
+    }
+    .mini-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(0,255,136,.8);
+    }
     .auth-tabs {
       display: flex;
       gap: 10px;
@@ -233,6 +261,44 @@
       font-size: 0.8rem;
     }
     .meta-link a { color: var(--gold); }
+    .socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+    .social-btn {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,.02);
+      color: var(--white-dim);
+      padding: 12px 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .social-btn:hover { border-color: var(--gold-border); transform: translateY(-1px); }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0 18px;
+      color: var(--white-dimmer);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
     .top-link {
       position: absolute;
       top: 20px;
@@ -287,10 +353,20 @@
       </div>
 
       <div class="auth-panel">
+        <div class="mini-header">
+          <span>Member workspace</span>
+          <span class="mini-status">Secure</span>
+        </div>
         <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
           <button class="auth-tab active" type="button" data-target="login-panel">Log In</button>
           <button class="auth-tab" type="button" data-target="signup-panel">Sign Up</button>
         </div>
+
+        <div class="socials">
+          <button class="social-btn" type="button">Google</button>
+          <button class="social-btn" type="button">Apple</button>
+        </div>
+        <div class="divider">or continue with email</div>
 
         <form class="auth-form active" id="login-panel" novalidate>
           <div class="auth-form-grid">
