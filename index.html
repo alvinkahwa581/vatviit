@@ -276,6 +276,36 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 .footer-badges{display:flex;gap:.75rem}
 .fb{background:var(--gold-bg);border:1px solid var(--gold-border);color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.06em;padding:.2rem .5rem;border-radius:3px;text-transform:uppercase}
 
+/* ── AUTH AREA ── */
+.auth-section{padding-top:5rem;padding-bottom:5rem}
+.auth-shell{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:1.5rem;align-items:stretch}
+.auth-copy{background:linear-gradient(135deg,rgba(20,26,36,0.8),rgba(26,33,46,0.8));border:1px solid rgba(255,215,0,.2);border-radius:var(--r-lg);padding:2rem;display:flex;flex-direction:column;justify-content:center}
+.auth-copy .section-tag{margin-bottom:1.5rem}
+.auth-copy p{color:var(--white-dim);line-height:1.7;margin-bottom:1.25rem}
+.auth-points{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.auth-point{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--r);padding:1rem}
+.auth-point strong{display:block;font-size:.7rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.auth-point span{font-size:.85rem;color:var(--white-dim);line-height:1.5}
+.auth-panel{background:linear-gradient(135deg,rgba(15,20,25,.96),rgba(20,26,36,.96));border:1px solid rgba(0,255,136,.2);border-radius:var(--r-lg);padding:1.25rem;box-shadow:0 25px 50px rgba(0,0,0,.25)}
+.auth-tabs{display:flex;gap:.5rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:.35rem}
+.auth-tab{flex:1;border:0;background:transparent;color:var(--white-dim);font-weight:700;padding:.8rem 1rem;border-radius:10px;cursor:pointer;transition:all .2s}
+.auth-tab.active{background:linear-gradient(135deg,var(--gold),var(--yellow));color:var(--black);box-shadow:0 8px 20px rgba(255,215,0,.2)}
+.auth-form{display:none;margin-top:1.3rem}
+.auth-form.active{display:block}
+.auth-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.auth-field{display:flex;flex-direction:column;gap:.45rem}
+.auth-field.full{grid-column:1 / -1}
+.auth-field label{font-size:.7rem;color:var(--white-dimmer);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.auth-field input{width:100%;background:rgba(255,255,255,.02);border:1px solid var(--border-bright);border-radius:10px;padding:.9rem 1rem;color:var(--white);font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.auth-field input:focus{border-color:rgba(255,215,0,.7);box-shadow:0 0 0 3px rgba(255,215,0,.12)}
+.auth-actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.auth-remember{display:flex;align-items:center;gap:.5rem;color:var(--white-dim);font-size:.85rem}
+.auth-remember input{accent-color:var(--gold)}
+.auth-submit{background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--black);border:0;border-radius:10px;padding:.9rem 1.4rem;font-weight:800;cursor:pointer;transition:transform .2s, box-shadow .2s}
+.auth-submit:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(255,215,0,.20)}
+.auth-meta{margin-top:1rem;font-size:.8rem;color:var(--white-dim);text-align:center}
+.auth-meta a{color:var(--gold);text-decoration:none}
+
 /* ── SCROLL REVEAL ── */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:none}
@@ -310,6 +340,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
     <a href="compliance.html">Compliance</a>
     <a href="brokers.html">Brokers</a>
     <a href="about.html">About</a>
+    <a href="#auth">Log In</a>
     <a href="#get-started" class="nav-cta">Get Early Access</a>
   </div>
 </nav>
@@ -602,6 +633,90 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
   </div>
 </section>
 
+<!-- AUTH -->
+<section class="auth-section" id="auth">
+  <div class="auth-shell reveal">
+    <div class="auth-copy">
+      <div class="section-tag">Member Access</div>
+      <h2>Access your VaTViT workspace.</h2>
+      <p>Sign in to monitor positions, review market intelligence, and keep track of compliance activity from one secure dashboard.</p>
+      <div class="auth-points">
+        <div class="auth-point">
+          <strong>Secure</strong>
+          <span>Protected access with institutional-grade session controls.</span>
+        </div>
+        <div class="auth-point">
+          <strong>Live</strong>
+          <span>See portfolio movement and market updates in real time.</span>
+        </div>
+        <div class="auth-point">
+          <strong>Compliant</strong>
+          <span>Built around KYC, AML, and audit-first operational visibility.</span>
+        </div>
+        <div class="auth-point">
+          <strong>Fast</strong>
+          <span>Sign in or create an account in under a minute.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+        <button class="auth-tab active" type="button" data-target="login-panel">Log In</button>
+        <button class="auth-tab" type="button" data-target="signup-panel">Sign Up</button>
+      </div>
+
+      <form class="auth-form active" id="login-panel" novalidate>
+        <div class="auth-form-grid">
+          <div class="auth-field full">
+            <label for="login-email">Email address</label>
+            <input id="login-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field full">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" placeholder="Enter your password" />
+          </div>
+        </div>
+        <div class="auth-actions">
+          <label class="auth-remember"><input type="checkbox" /> Remember me</label>
+          <button class="auth-submit" type="submit">Log In</button>
+        </div>
+        <div class="auth-meta"><a href="#">Forgot password?</a></div>
+      </form>
+
+      <form class="auth-form" id="signup-panel" novalidate>
+        <div class="auth-form-grid">
+          <div class="auth-field">
+            <label for="signup-name">Full name</label>
+            <input id="signup-name" type="text" placeholder="Your name" />
+          </div>
+          <div class="auth-field">
+            <label for="signup-phone">Phone</label>
+            <input id="signup-phone" type="tel" placeholder="0712 345 678" />
+          </div>
+          <div class="auth-field full">
+            <label for="signup-email">Email address</label>
+            <input id="signup-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" placeholder="Create password" />
+          </div>
+          <div class="auth-field">
+            <label for="signup-confirm">Confirm password</label>
+            <input id="signup-confirm" type="password" placeholder="Repeat password" />
+          </div>
+        </div>
+        <div class="auth-actions">
+          <span class="auth-remember">Join the early-access list</span>
+          <button class="auth-submit" type="submit">Create Account</button>
+        </div>
+        <div class="auth-meta">Already a member? <a href="#auth">Log in here</a></div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section" id="get-started">
   <div class="cta-glow"></div>
@@ -670,6 +785,122 @@ const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const tabs = document.querySelectorAll('.auth-tab');
+const forms = document.querySelectorAll('.auth-form');
+
+const storageKey = 'vatvit_users';
+
+function saveAuthSession(token, user) {
+  localStorage.setItem('vatvit_token', token);
+  localStorage.setItem('vatvit_current_user', JSON.stringify(user));
+}
+
+async function loginUser(email, password) {
+  const response = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    return { ok: false, message: data.message || 'Login failed.' };
+  }
+
+  saveAuthSession(data.token, data.user);
+  return { ok: true, message: data.message };
+}
+
+async function registerUser(payload) {
+  const response = await fetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    return { ok: false, message: data.message || 'Registration failed.' };
+  }
+
+  saveAuthSession(data.token, data.user);
+  return { ok: true, message: data.message };
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(item => item.classList.toggle('active', item === tab));
+    forms.forEach(form => form.classList.toggle('active', form.id === tab.dataset.target));
+  });
+});
+
+document.getElementById('login-panel').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const submit = this.querySelector('.auth-submit');
+
+  if (!email || !password) {
+    alert('Please enter your email and password.');
+    return;
+  }
+
+  submit.disabled = true;
+  submit.textContent = 'Signing in...';
+
+  const result = await loginUser(email, password);
+
+  if (!result.ok) {
+    alert(result.message);
+    submit.disabled = false;
+    submit.textContent = 'Log In';
+    return;
+  }
+
+  alert(result.message);
+  window.location.href = '/dashboard';
+});
+
+document.getElementById('signup-panel').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const name = document.getElementById('signup-name').value.trim();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const confirmPassword = document.getElementById('signup-confirm').value;
+  const submit = this.querySelector('.auth-submit');
+
+  if (!name || !phone || !email || !password || !confirmPassword) {
+    alert('Please complete all sign-up fields.');
+    return;
+  }
+
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters long.');
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert('Passwords do not match.');
+    return;
+  }
+
+  submit.disabled = true;
+  submit.textContent = 'Creating...';
+
+  const result = await registerUser({ name, phone, email, password });
+
+  if (!result.ok) {
+    alert(result.message);
+    submit.disabled = false;
+    submit.textContent = 'Create Account';
+    return;
+  }
+
+  alert(result.message);
+  window.location.href = '/dashboard';
+});
 </script>
 </body>
 </html>
