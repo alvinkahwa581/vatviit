@@ -22,6 +22,8 @@
 <meta name="twitter:title" content="VaTViT — Trading Platform for Modern Markets">
 <meta name="twitter:description" content="VaTViT brings institutional-grade insights, real-time market intelligence, and calm risk control into one elegant trading workspace.">
 <meta name="twitter:image" content="https://vatvit.site/assets/vatvit-social.svg">
+<script>window.VATVIT_API_URL = window.VATVIT_API_URL || '';</script>
+<script defer data-domain="vatvit.site" src="https://plausible.io/js/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
@@ -781,7 +783,7 @@ if (waitlistForm) {
     submit.textContent = 'Joining...';
     status.textContent = '';
     try {
-      const response = await fetch('/api/waitlist', {
+      const response = await fetch(`${window.VATVIT_API_URL}/api/waitlist`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.value.trim() })
