@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: vatvit-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: WAITLIST_FROM_EMAIL
+        sync: false
+      - key: WAITLIST_NOTIFY_EMAIL
+        sync: false
+      - key: SENTRY_DSN
+        sync: false

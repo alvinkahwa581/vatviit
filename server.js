@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs/promises');
 const path = require('path');
+const { Pool } = require('pg');
+const Sentry = require('@sentry/node');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,9 +14,16 @@ const DATA_DIR = path.join(__dirname, 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const WAITLIST_FILE = path.join(DATA_DIR, 'waitlist.json');
 const requestCounts = new Map();
+const database = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
+  : null;
 
 if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'vatvit-dev-secret') {
   throw new Error('JWT_SECRET must be configured in production.');
+}
+
+if (process.env.SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN, environment: process.env.NODE_ENV || 'development' });
 }
 
 app.use(cors());
@@ -29,6 +38,23 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname));
 
 async function ensureStorage() {
+  if (database) {
+    await database.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS waitlist (
+        email TEXT PRIMARY KEY,
+        created_at TIMESTAMPTZ NOT NULL
+      );
+    `);
+    return;
+  }
   await fs.mkdir(DATA_DIR, { recursive: true });
 
   try {
@@ -40,17 +66,32 @@ async function ensureStorage() {
 
 async function readUsers() {
   await ensureStorage();
+  if (database) {
+    const result = await database.query('SELECT id, name, phone, email, password, created_at AS "createdAt" FROM users ORDER BY created_at');
+    return result.rows;
+  }
   const content = await fs.readFile(USERS_FILE, 'utf8');
   return JSON.parse(content || '[]');
 }
 
 async function writeUsers(users) {
+  if (database) {
+    await database.query('DELETE FROM users');
+    for (const user of users) {
+      await database.query('INSERT INTO users (id, name, phone, email, password, created_at) VALUES ($1, $2, $3, $4, $5, $6)', [user.id, user.name, user.phone, user.email, user.password, user.createdAt]);
+    }
+    return;
+  }
   await ensureStorage();
   await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
 }
 
 async function readWaitlist() {
   await ensureStorage();
+  if (database) {
+    const result = await database.query('SELECT email, created_at AS "createdAt" FROM waitlist ORDER BY created_at');
+    return result.rows;
+  }
   try {
     const content = await fs.readFile(WAITLIST_FILE, 'utf8');
     return JSON.parse(content || '[]');
@@ -62,6 +103,12 @@ async function readWaitlist() {
 }
 
 async function writeWaitlist(entries) {
+  if (database) {
+    for (const entry of entries) {
+      await database.query('INSERT INTO waitlist (email, created_at) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING', [entry.email, entry.createdAt]);
+    }
+    return;
+  }
   await ensureStorage();
   await fs.writeFile(WAITLIST_FILE, JSON.stringify(entries, null, 2), 'utf8');
 }
@@ -75,6 +122,20 @@ function rateLimit(key, limit = 8, windowMs = 60 * 60 * 1000) {
   }
   entry.count += 1;
   return entry.count <= limit;
+}
+
+async function notifyWaitlist(email) {
+  if (!process.env.RESEND_API_KEY || !process.env.WAITLIST_NOTIFY_EMAIL) return;
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: process.env.WAITLIST_FROM_EMAIL || 'VaTViT <onboarding@resend.dev>',
+      to: [process.env.WAITLIST_NOTIFY_EMAIL],
+      subject: 'New VaTViT early-access request',
+      text: `New waitlist email: ${email}`,
+    }),
+  });
 }
 
 function signToken(user) {
@@ -119,10 +180,12 @@ app.post('/api/waitlist', async (req, res) => {
     if (!entries.some((entry) => entry.email === email)) {
       entries.push({ email, createdAt: new Date().toISOString() });
       await writeWaitlist(entries);
+      await notifyWaitlist(email);
     }
 
     return res.status(201).json({ message: 'You are on the early-access list.' });
   } catch (error) {
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
     return res.status(500).json({ message: 'Unable to join the waitlist right now.' });
   }
 });
@@ -166,6 +229,7 @@ app.post('/api/register', async (req, res) => {
       user: sanitizeUser(newUser),
     });
   } catch (error) {
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
     return res.status(500).json({ message: 'Registration failed. Please try again.' });
   }
 });
@@ -197,6 +261,7 @@ app.post('/api/login', async (req, res) => {
       user: sanitizeUser(user),
     });
   } catch (error) {
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
     return res.status(500).json({ message: 'Login failed. Please try again.' });
   }
 });
