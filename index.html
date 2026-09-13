@@ -8,19 +8,25 @@
 <meta name="keywords" content="VaTViT, trading platform, financial operating system, forex, crypto, stocks, portfolio management">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0D1117">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
 <link rel="canonical" href="https://vatvit.site/">
 <meta property="og:title" content="VaTViT — Trading Platform for Modern Markets">
 <meta property="og:description" content="VaTViT brings institutional-grade insights, real-time market intelligence, and calm risk control into one elegant trading workspace.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://vatvit.site/">
 <meta property="og:site_name" content="VaTViT">
+<meta property="og:image" content="https://vatvit.site/assets/vatvit-social.svg">
+<meta property="og:image:alt" content="VaTViT trading platform brand mark">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="VaTViT — Trading Platform for Modern Markets">
 <meta name="twitter:description" content="VaTViT brings institutional-grade insights, real-time market intelligence, and calm risk control into one elegant trading workspace.">
+<meta name="twitter:image" content="https://vatvit.site/assets/vatvit-social.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 :root{
   --gold:#FFD700;
@@ -690,10 +696,12 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
     <div class="section-tag" style="justify-content:center">Early Access</div>
     <h2>Join the waitlist.<br>Shape the platform.</h2>
     <p class="cta-sub">We're accepting a limited cohort of early-access users and institutional partners ahead of our CMA Sandbox launch.</p>
-    <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto">
-      <input type="email" placeholder="your@email.com" style="flex:1;min-width:200px;padding:.75rem 1rem;background:var(--surface2);border:1px solid var(--border-bright);border-radius:var(--r);color:var(--white);font-size:.95rem;outline:none">
-      <button class="btn-primary" style="flex-shrink:0">Request Access</button>
-    </div>
+    <form class="waitlist-form" id="waitlist-form" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto">
+      <label class="sr-only" for="waitlist-email">Email address</label>
+      <input id="waitlist-email" type="email" required placeholder="your@email.com" autocomplete="email" aria-describedby="waitlist-status" style="flex:1;min-width:200px;padding:.75rem 1rem;background:var(--surface2);border:1px solid var(--border-bright);border-radius:var(--r);color:var(--white);font-size:.95rem;outline:none">
+      <button class="btn-primary" type="submit" style="flex-shrink:0">Request Access</button>
+      <p id="waitlist-status" role="status" aria-live="polite" style="flex-basis:100%;color:var(--green);font-size:.82rem;min-height:1.3em"></p>
+    </form>
     <div class="cta-features">
       <span class="cta-feat">No credit card required</span>
       <span class="cta-feat">CMA Sandbox participant</span>
@@ -754,6 +762,24 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 const tabs = document.querySelectorAll('.auth-tab');
 const forms = document.querySelectorAll('.auth-form');
+
+const waitlistForm = document.getElementById('waitlist-form');
+if (waitlistForm) {
+  waitlistForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const email = document.getElementById('waitlist-email');
+    const status = document.getElementById('waitlist-status');
+    const submit = waitlistForm.querySelector('button[type="submit"]');
+    if (!email.checkValidity()) {
+      email.reportValidity();
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = 'Request received';
+    status.textContent = 'Thanks. We will be in touch with early-access details.';
+    email.value = '';
+  });
+}
 
 document.querySelectorAll('.password-toggle').forEach(button => {
   button.addEventListener('click', () => {
@@ -821,7 +847,8 @@ document.querySelectorAll('.password-toggle').forEach(button => {
   });
 });
 
-document.getElementById('login-panel').addEventListener('submit', async function(event) {
+const loginPanel = document.getElementById('login-panel');
+if (loginPanel) loginPanel.addEventListener('submit', async function(event) {
   event.preventDefault();
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -848,7 +875,8 @@ document.getElementById('login-panel').addEventListener('submit', async function
   window.location.href = '/dashboard';
 });
 
-document.getElementById('signup-panel').addEventListener('submit', async function(event) {
+const signupPanel = document.getElementById('signup-panel');
+if (signupPanel) signupPanel.addEventListener('submit', async function(event) {
   event.preventDefault();
   const name = document.getElementById('signup-name').value.trim();
   const phone = document.getElementById('signup-phone').value.trim();
