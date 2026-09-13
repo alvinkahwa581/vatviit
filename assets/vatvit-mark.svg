@@ -1,8 +1,8 @@
 <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">VaTViT mark</title>
-  <desc id="desc">A gold and green rising market signal forming the letter V.</desc>
-  <rect x="4" y="4" width="88" height="88" rx="24" fill="#101820" stroke="#2A3848" stroke-width="2"/>
-  <path d="M24 27L39 66L49 43L58 66L73 27" stroke="#FFD700" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M47 43L58 31L66 39L76 25" stroke="#00FF88" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="76" cy="25" r="4" fill="#00FF88"/>
+  <desc id="desc">A refined gold V monogram crossed by a green rising market signal.</desc>
+  <rect x="4" y="4" width="88" height="88" rx="20" fill="#0E1720" stroke="#314252" stroke-width="2"/>
+  <path d="M23 27L41 69L52 45L64 69L79 27" stroke="#FFD34E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M45 52L58 39L66 47L78 31" stroke="#63F5B0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M72 31H78V37" stroke="#63F5B0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
