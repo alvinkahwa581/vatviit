@@ -10,9 +10,22 @@ const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'vatvit-dev-secret';
 const DATA_DIR = path.join(__dirname, 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const WAITLIST_FILE = path.join(DATA_DIR, 'waitlist.json');
+const requestCounts = new Map();
+
+if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'vatvit-dev-secret') {
+  throw new Error('JWT_SECRET must be configured in production.');
+}
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
+app.disable('x-powered-by');
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
 app.use(express.static(__dirname));
 
 async function ensureStorage() {
@@ -34,6 +47,34 @@ async function readUsers() {
 async function writeUsers(users) {
   await ensureStorage();
   await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2), 'utf8');
+}
+
+async function readWaitlist() {
+  await ensureStorage();
+  try {
+    const content = await fs.readFile(WAITLIST_FILE, 'utf8');
+    return JSON.parse(content || '[]');
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    await fs.writeFile(WAITLIST_FILE, JSON.stringify([], null, 2), 'utf8');
+    return [];
+  }
+}
+
+async function writeWaitlist(entries) {
+  await ensureStorage();
+  await fs.writeFile(WAITLIST_FILE, JSON.stringify(entries, null, 2), 'utf8');
+}
+
+function rateLimit(key, limit = 8, windowMs = 60 * 60 * 1000) {
+  const now = Date.now();
+  const entry = requestCounts.get(key);
+  if (!entry || now - entry.startedAt > windowMs) {
+    requestCounts.set(key, { startedAt: now, count: 1 });
+    return true;
+  }
+  entry.count += 1;
+  return entry.count <= limit;
 }
 
 function signToken(user) {
@@ -60,6 +101,30 @@ function sanitizeUser(user) {
 
 app.get('/api/health', async (req, res) => {
   res.json({ ok: true, message: 'VaTViT auth service is running.' });
+});
+
+app.post('/api/waitlist', async (req, res) => {
+  try {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!rateLimit(`waitlist:${ip}`)) {
+      return res.status(429).json({ message: 'Too many requests. Please try again later.' });
+    }
+
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ message: 'Please provide a valid email address.' });
+    }
+
+    const entries = await readWaitlist();
+    if (!entries.some((entry) => entry.email === email)) {
+      entries.push({ email, createdAt: new Date().toISOString() });
+      await writeWaitlist(entries);
+    }
+
+    return res.status(201).json({ message: 'You are on the early-access list.' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Unable to join the waitlist right now.' });
+  }
 });
 
 app.post('/api/register', async (req, res) => {
