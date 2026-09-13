@@ -741,10 +741,13 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
     </div>
     <div class="footer-col" id="about">
       <h4>Company</h4>
-      <a href="#">About VaTViT</a>
+      <a href="about.html">About VaTViT</a>
       <a href="#">Blog</a>
       <a href="#">Careers</a>
       <a href="#">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="risk-disclosure.html">Risk Disclosure</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -765,7 +768,7 @@ const forms = document.querySelectorAll('.auth-form');
 
 const waitlistForm = document.getElementById('waitlist-form');
 if (waitlistForm) {
-  waitlistForm.addEventListener('submit', event => {
+  waitlistForm.addEventListener('submit', async event => {
     event.preventDefault();
     const email = document.getElementById('waitlist-email');
     const status = document.getElementById('waitlist-status');
@@ -775,9 +778,25 @@ if (waitlistForm) {
       return;
     }
     submit.disabled = true;
-    submit.textContent = 'Request received';
-    status.textContent = 'Thanks. We will be in touch with early-access details.';
-    email.value = '';
+    submit.textContent = 'Joining...';
+    status.textContent = '';
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.value.trim() })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Unable to join the waitlist.');
+      submit.textContent = 'Request received';
+      status.textContent = data.message || 'Thanks. We will be in touch with early-access details.';
+      email.value = '';
+    } catch (error) {
+      submit.disabled = false;
+      submit.textContent = 'Request Access';
+      status.style.color = 'var(--orange)';
+      status.textContent = error.message;
+    }
   });
 }
 

@@ -169,6 +169,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95
     <a href="#settings">Settings</a>
     <a href="#kyc">KYC Status</a>
     <a href="#security">Security</a>
+    <a href="auth.html" id="logout-link">Log out</a>
   </aside>
 
   <!-- MAIN CONTENT -->
@@ -349,6 +350,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.95
 </div>
 
 <script>
+const sessionToken = localStorage.getItem('vatvit_token');
+if (!sessionToken) {
+  window.location.replace('auth.html');
+}
+
+document.getElementById('logout-link')?.addEventListener('click', () => {
+  localStorage.removeItem('vatvit_token');
+  localStorage.removeItem('vatvit_current_user');
+});
+
 if (window.Chart) {
   // Portfolio Growth Chart
   const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
