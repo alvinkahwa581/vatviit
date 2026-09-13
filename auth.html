@@ -70,11 +70,18 @@
       margin-bottom: 18px;
     }
     .brand-mark {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 18px rgba(255,215,0,.7);
+      width: 34px;
+      height: 34px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(0,255,136,.25));
+    }
+    .brand-name {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 7px;
+    }
+    .brand-name strong { color: var(--gold); font-size: .95rem; letter-spacing: .04em; }
+    .brand-name span { color: var(--white-dim); font-size: .68rem; letter-spacing: .1em; }
     }
     h1 {
       font-size: clamp(2.2rem, 4vw, 3.4rem);
@@ -424,7 +431,7 @@
   <div class="page-shell">
     <div class="auth-card">
       <div class="auth-copy">
-        <div class="brand"><span class="brand-mark"></span> VaTViT Member Access</div>
+        <div class="brand"><img class="brand-mark" src="assets/vatvit-mark.svg" alt=""><span class="brand-name"><strong>VaTViT</strong><span>MEMBER ACCESS</span></span></div>
         <h1>Access your workspace.</h1>
         <p>Sign in to monitor positions, review market intelligence, and keep track of compliance activity from one secure dashboard.</p>
         <div class="feature-grid">

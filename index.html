@@ -59,6 +59,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,10,14,0.85
 .dev-copy strong{color:var(--gold);font-size:.88rem;text-transform:uppercase}
 .nav-logo{font-family:Calibri,sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:0.04em;text-decoration:none}
 .nav-logo span{color:var(--white);opacity:.4;font-weight:400;font-size:.75rem;margin-left:6px;vertical-align:2px;font-family:Calibri,sans-serif}
+.nav-logo{display:inline-flex;align-items:center;gap:.65rem}
+.nav-logo img{width:32px;height:32px;display:block;filter:drop-shadow(0 0 10px rgba(0,255,136,.2))}
+.nav-logo .wordmark{color:var(--gold);font-size:1.4rem;font-weight:800;letter-spacing:.04em;margin:0;vertical-align:initial}
+.nav-logo .descriptor{color:var(--white);opacity:.4;font-size:.75rem;font-weight:400;margin-left:-.3rem;vertical-align:2px}
 .nav-links{display:flex;align-items:center;gap:2rem}
 .nav-links a{color:var(--white-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
 .nav-links a:hover{color:var(--white)}
@@ -379,7 +383,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">VaTViT <span>FinOS</span></a>
+  <a href="index.html" class="nav-logo" aria-label="VaTViT home"><img src="assets/vatvit-mark.svg" alt=""><span class="wordmark">VaTViT</span><span class="descriptor">FinOS</span></a>
   <div class="nav-links">
     <a href="dashboard.html">Dashboard</a>
     <a href="platform.html">Platform</a>
@@ -703,7 +707,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="#" class="nav-logo">VaTViT</a>
+      <a href="#" class="nav-logo" aria-label="VaTViT home"><img src="assets/vatvit-mark.svg" alt=""><span class="wordmark">VaTViT</span></a>
       <p>Built for modern traders who want clarity, control, and confidence in every market.</p>
       <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
         <span class="fb">CMA Sandbox</span>
