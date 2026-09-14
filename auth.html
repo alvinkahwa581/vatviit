@@ -412,7 +412,11 @@
       .primary-btn { width: 100%; }
       .remember { width: 100%; }
     }
-  </style>
+  
+    .form-status { min-height: 1.4em; margin-top: 14px; color: var(--white-dim); font-size: .85rem; line-height: 1.5; }
+    .form-status.error { color: var(--red); }
+    .form-status.success { color: var(--green); }
+</style>
 </head>
 <body>
   <script>window.VATVIT_API_URL = 'https://vatvit-api-jant.onrender.com';</script>
@@ -610,6 +614,14 @@
       handleSocialLogin(selectedProvider);
     });
 
+
+    function showAuthStatus(form, message, type = 'error') {
+      let status = form.querySelector('.form-status');
+      if (!status) { status = document.createElement('p'); status.className = 'form-status'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); form.appendChild(status); }
+      status.className = 'form-status ' + type;
+      status.textContent = message;
+    }
+
     async function loginUser(email, password) {
       const response = await fetch(`${window.VATVIT_API_URL}/api/login`, {
         method: 'POST',
@@ -645,7 +657,7 @@
       const submit = this.querySelector('.primary-btn');
 
       if (!email || !password) {
-        alert('Please enter your email and password.');
+        showAuthStatus(this, 'Enter your email and password to continue.');
         return;
       }
 
@@ -654,14 +666,14 @@
 
       const result = await loginUser(email, password);
       if (!result.ok) {
-        alert(result.message);
+        showAuthStatus(this, result.message);
         submit.disabled = false;
         submit.textContent = 'Log In';
         return;
       }
 
-      alert(result.message);
-      window.location.href = 'welcome.html';
+      showAuthStatus(this, result.message, 'success');
+      window.setTimeout(() => { window.location.href = 'welcome.html'; }, 500);
     });
 
     document.getElementById('signup-panel').addEventListener('submit', async function (event) {
@@ -674,17 +686,17 @@
       const submit = this.querySelector('.primary-btn');
 
       if (!name || !phone || !email || !password || !confirmPassword) {
-        alert('Please complete all sign-up fields.');
+        showAuthStatus(this, 'Complete all fields to create your account.');
         return;
       }
 
       if (password.length < 6) {
-        alert('Password must be at least 6 characters long.');
+        showAuthStatus(this, 'Use a password with at least 6 characters.');
         return;
       }
 
       if (password !== confirmPassword) {
-        alert('Passwords do not match.');
+        showAuthStatus(this, 'The passwords do not match.');
         return;
       }
 
@@ -699,11 +711,9 @@
         return;
       }
 
-      alert(result.message);
-      window.location.href = 'verify-email.html';
+      showAuthStatus(this, result.message, 'success');
+      window.setTimeout(() => { window.location.href = 'verify-email.html'; }, 500);
     });
   </script>
 </body>
-</html>
-
-<script>window.VATVIT_API_URL = 'https://vatvit-api-jant.onrender.com';</script>
+        </html>
