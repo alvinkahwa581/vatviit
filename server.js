@@ -294,3 +294,16 @@ app.get('*', (req, res, next) => {
 app.listen(PORT, () => {
   console.log(`VaTViT auth server is running on http://localhost:${PORT}`);
 });
+
+app.get('/api/admin/waitlist', async (req, res) => {
+  const adminKey = process.env.ADMIN_KEY;
+  if (!adminKey || req.get('X-Admin-Key') !== adminKey) {
+    return res.status(401).json({ message: 'Invalid admin key.' });
+  }
+  try {
+    return res.json({ entries: await readWaitlist() });
+  } catch (error) {
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
+    return res.status(500).json({ message: 'Unable to load the early-access list.' });
+  }
+});
