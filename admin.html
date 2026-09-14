@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaTViT | Early Access Admin</title>
+<style>
+:root{--bg:#0a0e15;--panel:#141a24;--line:#2a3848;--text:#f4f1e8;--muted:#9aa0a8;--gold:#ffd700;--green:#00ff88;--red:#e04040}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0a0e15,#111827);color:var(--text);font:16px/1.5 Calibri,Arial,sans-serif;padding:32px}.shell{max-width:900px;margin:0 auto}.panel{background:rgba(20,26,36,.92);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 20px 60px #0005}h1{margin:0 0 6px;color:var(--gold)}p{color:var(--muted)}form{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}input{flex:1;min-width:220px;background:#0a0e15;border:1px solid var(--line);border-radius:8px;padding:12px;color:var(--text)}button{background:var(--gold);border:0;border-radius:8px;padding:12px 18px;font-weight:700;cursor:pointer}.status{min-height:24px;color:var(--red)}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{color:var(--gold)}td{color:var(--text)}.count{color:var(--green);font-weight:700}
+</style>
+</head>
+<body><main class="shell"><section class="panel"><h1>Early Access</h1><p>Private view of people who requested VaTViT access.</p><form id="access-form"><input id="admin-key" type="password" placeholder="Admin key" autocomplete="current-password" required><button type="submit">Load list</button></form><div class="status" id="status" role="status" aria-live="polite"></div><div id="results"></div></section></main>
+<script>
+const api='https://vatvit-api-jant.onrender.com';
+document.getElementById('access-form').addEventListener('submit',async event=>{event.preventDefault();const key=document.getElementById('admin-key').value;const status=document.getElementById('status');const results=document.getElementById('results');status.textContent='Loading...';results.innerHTML='';try{const response=await fetch(`${api}/api/admin/waitlist`,{headers:{'X-Admin-Key':key}});const data=await response.json();if(!response.ok)throw new Error(data.message||'Unable to load the list.');status.textContent='';results.innerHTML=`<p class="count">${data.entries.length} people requested access.</p><table><thead><tr><th>Email</th><th>Requested</th></tr></thead><tbody>${data.entries.map(entry=>`<tr><td>${entry.email}</td><td>${new Date(entry.createdAt).toLocaleString()}</td></tr>`).join('')}</tbody></table>`}catch(error){status.textContent=error.message}});
+</script></body></html>
