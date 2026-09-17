@@ -1,8 +1,35 @@
 <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">VaTViT mark</title>
-  <desc id="desc">A refined gold V monogram crossed by a green rising market signal.</desc>
-  <rect x="4" y="4" width="88" height="88" rx="20" fill="#0E1720" stroke="#314252" stroke-width="2"/>
-  <path d="M23 27L41 69L52 45L64 69L79 27" stroke="#FFD34E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M45 52L58 39L66 47L78 31" stroke="#63F5B0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M72 31H78V37" stroke="#63F5B0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <title id="title">VaTViT V candlestick mark</title>
+  <desc id="desc">A bold V monogram formed from rising gold and green candlesticks.</desc>
+  <defs>
+    <linearGradient id="bg" x1="12" y1="8" x2="84" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#152330"/>
+      <stop offset="1" stop-color="#0A1119"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="22" y1="22" x2="48" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF08A"/>
+      <stop offset="1" stop-color="#F5B91E"/>
+    </linearGradient>
+    <linearGradient id="green" x1="48" y1="76" x2="78" y2="20" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#25C982"/>
+      <stop offset="1" stop-color="#9CFFD1"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="88" height="88" rx="20" fill="url(#bg)" stroke="#334858" stroke-width="2"/>
+  <path d="M19 21L38 73L48 51L58 73L77 21" stroke="#071019" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  <path d="M19 21L38 73L48 51" stroke="url(#gold)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M48 51L58 73L77 21" stroke="url(#green)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <g stroke="#FFD34E" stroke-width="2.5" stroke-linecap="round">
+    <path d="M27 29V48"/><path d="M22 34H32"/><path d="M22 43H32"/>
+    <path d="M36 47V64"/><path d="M31 52H41"/><path d="M31 60H41"/>
+  </g>
+  <g stroke="#63F5B0" stroke-width="2.5" stroke-linecap="round">
+    <path d="M60 45V64"/><path d="M55 50H65"/><path d="M55 58H65"/>
+    <path d="M70 27V45"/><path d="M65 32H75"/><path d="M65 40H75"/>
+  </g>
+  <circle cx="48" cy="51" r="3.5" fill="#FFF4B0" stroke="#0A1119" stroke-width="2"/>
 </svg>
