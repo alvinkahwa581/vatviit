@@ -71,6 +71,7 @@ textarea {
 }
 
 .site-brand span {
+  display: none;
   color: #a9afb8;
   font-size: .78rem;
   font-weight: 500;
