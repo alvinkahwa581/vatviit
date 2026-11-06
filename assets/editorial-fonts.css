@@ -132,6 +132,80 @@ textarea {
   }
 }
 
+:root {
+  --gold: #FFD700 !important;
+  --gold-lt: #FFED4E !important;
+  --orange: #FF6B35 !important;
+  --black: #0A0E15 !important;
+  --surface: #0F1419 !important;
+  --surface2: #141A24 !important;
+  --surface3: #1A212E !important;
+  --white: #F4F1E8 !important;
+  --muted: #9AA0A8 !important;
+  --dim: #4A5260 !important;
+  --border: #1E2A38 !important;
+  --green: #00FF88 !important;
+  --red: #E04040 !important;
+  --ink: var(--white) !important;
+  --accent: var(--gold) !important;
+  --page: var(--black) !important;
+  --line: var(--border) !important;
+}
+
+body {
+  background-color: var(--black) !important;
+  color: var(--white) !important;
+}
+
+.site-nav {
+  background: rgba(8, 10, 14, .9) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+.site-nav-links a[aria-current="page"] {
+  box-shadow: inset 0 -2px var(--gold) !important;
+}
+
+.site-nav-links .site-nav-cta,
+.primary,
+.next-step a {
+  background: linear-gradient(135deg, var(--gold), var(--orange)) !important;
+  color: var(--black) !important;
+}
+
+.dev-banner,
+.market-note {
+  background: rgba(10, 14, 21, .92) !important;
+  border-color: rgba(255, 215, 0, .2) !important;
+  color: var(--muted) !important;
+}
+
+.dev-banner strong,
+.tag,
+.badge,
+.icon,
+.step-num {
+  color: var(--gold) !important;
+}
+
+.market-note a {
+  color: var(--gold-lt) !important;
+}
+
+.hero {
+  background:
+    radial-gradient(ellipse at 70% 40%, rgba(0, 255, 136, .1), transparent 55%),
+    radial-gradient(ellipse at 20% 30%, rgba(255, 107, 53, .13), transparent 60%),
+    linear-gradient(135deg, var(--black), #1a1a2e 50%, var(--black)) !important;
+}
+
+.visual,
+.card,
+.market {
+  background: linear-gradient(135deg, rgba(20, 26, 36, .9), rgba(26, 33, 46, .9)) !important;
+  border-color: rgba(255, 215, 0, .2) !important;
+}
+
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 3px solid #00ff88 !important;
   outline-offset: 3px;
