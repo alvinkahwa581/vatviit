@@ -72,8 +72,10 @@ function encryptSecret(secret, key = encryptionKey()) {
 }
 
 function decryptSecret(encrypted, key = encryptionKey()) {
-  const [iv, tag, ciphertext] = encrypted.split('.').map(part => Buffer.from(part, 'base64url'));
-  if (!iv || !tag || !ciphertext) throw new Error('Invalid encrypted authenticator secret.');
+  const parts = typeof encrypted === 'string' ? encrypted.split('.') : [];
+  if (parts.length !== 3 || parts.some(part => !part)) throw new Error('Invalid encrypted authenticator secret.');
+  const [iv, tag, ciphertext] = parts.map(part => Buffer.from(part, 'base64url'));
+  if (iv.length !== 12 || tag.length !== 16 || ciphertext.length === 0) throw new Error('Invalid encrypted authenticator secret.');
   const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
   decipher.setAuthTag(tag);
   return Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString('utf8');
@@ -147,20 +149,20 @@ function installAuthMfa(app, { database, bcrypt, jwt, jwtSecret, sanitizeUser })
 
   function failClosed(error, res, fallback) {
     console.error('Authentication verification error:', error.message);
-    return res.status(error.message.includes('not configured') || error.message.includes('requires the configured') ? 503 : 500)
-      .json({ message: fallback });
+    const status = /not configured|requires the configured|must be a 32-byte hexadecimal key/.test(error.message) ? 503 : 500;
+    return res.status(status).json({ message: fallback });
   }
 
   async function rateLimit(key, limit, windowMinutes = 60) {
     const hashedKey = digest(key, jwtSecret);
     const result = await database.query(`
       INSERT INTO auth_rate_limits (rate_key, count, reset_at)
-      VALUES ($1, 1, NOW() + ($3 * INTERVAL '1 minute'))
+      VALUES ($1, 1, NOW() + ($2 * INTERVAL '1 minute'))
       ON CONFLICT (rate_key) DO UPDATE SET
         count = CASE WHEN auth_rate_limits.reset_at <= NOW() THEN 1 ELSE auth_rate_limits.count + 1 END,
-        reset_at = CASE WHEN auth_rate_limits.reset_at <= NOW() THEN NOW() + ($3 * INTERVAL '1 minute') ELSE auth_rate_limits.reset_at END
+        reset_at = CASE WHEN auth_rate_limits.reset_at <= NOW() THEN NOW() + ($2 * INTERVAL '1 minute') ELSE auth_rate_limits.reset_at END
       RETURNING count
-    `, [hashedKey, limit, windowMinutes]);
+    `, [hashedKey, windowMinutes]);
     return result.rows[0].count <= limit;
   }
 
@@ -177,16 +179,22 @@ function installAuthMfa(app, { database, bcrypt, jwt, jwtSecret, sanitizeUser })
   async function emailCode(user, purpose = 'verify_email') {
     const code = String(crypto.randomInt(0, 1000000)).padStart(6, '0');
     const token = await createChallenge(user.id, purpose, { codeHash: digest(code, jwtSecret) });
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: process.env.WAITLIST_FROM_EMAIL,
-        to: [user.email],
-        subject: 'Your VaTViT verification code',
-        text: `Your VaTViT verification code is ${code}. It expires in ${OTP_TTL_MINUTES} minutes. If you did not request this, you can ignore this email.`,
-      }),
-    });
+    let response;
+    try {
+      response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: process.env.WAITLIST_FROM_EMAIL,
+          to: [user.email],
+          subject: 'Your VaTViT verification code',
+          text: `Your VaTViT verification code is ${code}. It expires in ${OTP_TTL_MINUTES} minutes. If you did not request this, you can ignore this email.`,
+        }),
+      });
+    } catch (error) {
+      await database.query('DELETE FROM auth_challenges WHERE token_hash = $1', [digest(token, jwtSecret)]);
+      throw error;
+    }
     if (!response.ok) {
       await database.query('DELETE FROM auth_challenges WHERE token_hash = $1', [digest(token, jwtSecret)]);
       console.error('Email provider rejected an authentication email:', response.status);
@@ -258,8 +266,7 @@ function installAuthMfa(app, { database, bcrypt, jwt, jwtSecret, sanitizeUser })
         [user.id, user.name, user.phone, user.email, user.password]
       );
       if (!result.rowCount) return res.status(409).json({ message: 'Unable to create an account with those details. Try signing in or use a different email.' });
-      const response = await issueOtpForUser(user, req, res);
-      return response;
+      return issueOtpForUser(user, req, res);
     } catch (error) {
       return failClosed(error, res, 'Unable to create your account or send a verification code. Please try again.');
     }
@@ -305,6 +312,11 @@ function installAuthMfa(app, { database, bcrypt, jwt, jwtSecret, sanitizeUser })
         [digest(token, jwtSecret)]
       );
       if (!challenge.rowCount) return res.status(400).json({ message: 'This verification session has expired. Sign in or register again.' });
+      const recent = await database.query(
+        "SELECT 1 FROM auth_challenges WHERE user_id = $1 AND purpose = 'verify_email' AND created_at > NOW() - INTERVAL '60 seconds' LIMIT 1",
+        [challenge.rows[0].user_id]
+      );
+      if (recent.rowCount) return res.status(429).json({ message: 'Please wait a minute before requesting another code.' });
       await database.query('DELETE FROM auth_challenges WHERE user_id = $1 AND purpose = $2', [challenge.rows[0].user_id, 'verify_email']);
       return issueOtpForUser(challenge.rows[0], req, res);
     } catch (error) {
