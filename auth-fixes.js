@@ -15,8 +15,13 @@
     window.location.replace('dashboard.html');
   }
 
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap';
+  document.head.append(fontLink);
+
   const style = document.createElement('style');
-  style.textContent = '.auth-feedback{margin:12px 0 0;color:#ff8b8b;font-size:.85rem;line-height:1.5}.submit:disabled{cursor:wait;opacity:.7}.social-btn:disabled{cursor:not-allowed;opacity:.6}';
+  style.textContent = 'body{font-family:"DM Sans",Calibri,"Segoe UI",sans-serif}.auth-copy h1,.auth-panel h1,h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;letter-spacing:-.025em}.auth-feedback{margin:12px 0 0;color:#ff8b8b;font-size:.85rem;line-height:1.5}.submit:disabled{cursor:wait;opacity:.7}.social-btn:disabled{cursor:not-allowed;opacity:.6}';
   document.head.append(style);
 
   function getFeedback(form) {
