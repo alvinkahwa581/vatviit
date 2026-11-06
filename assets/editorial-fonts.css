@@ -27,7 +27,7 @@ textarea {
   font-family: 'DM Sans', Calibri, 'Segoe UI', sans-serif !important;
 }
 
-.descriptor {
+.nav-logo .wordmark, .nav-logo .descriptor {   opacity: 1 !important; }  .descriptor {
   color: #9aa0a8 !important;
   opacity: 1 !important;
 }
