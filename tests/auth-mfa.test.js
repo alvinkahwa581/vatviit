@@ -4,10 +4,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const mfa = require('../auth-mfa');
 
-test('TOTP matches the RFC 6238 six-digit format and rejects invalid codes', () => {
+test('TOTP matches the RFC 6238 vector and rejects invalid codes', () => {
   const secret = mfa.base32Encode(Buffer.from('12345678901234567890'));
   const result = mfa.totpAt(secret, 59000);
-  assert.match(result.code, /^\d{6}$/);
+  assert.equal(result.code, '287082');
   assert.equal(mfa.matchTotp(secret, result.code, 59000), 1);
   assert.equal(mfa.matchTotp(secret, 'abcdef', 59000), null);
 });
