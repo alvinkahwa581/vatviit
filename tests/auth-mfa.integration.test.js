@@ -82,6 +82,7 @@ test('email verification, authenticator enrollment, login, and recovery are requ
     assert.ok(data.token);
     assert.equal(data.recoveryCodes.length, 10);
     assert.equal(jwt.verify(data.token, process.env.JWT_SECRET).email, credentials.email);
+    const recoveryCode = data.recoveryCodes[0];
 
     response = await post('/api/login', { email: credentials.email, password: credentials.password });
     data = await response.json();
@@ -92,7 +93,7 @@ test('email verification, authenticator enrollment, login, and recovery are requ
     const nextStep = Math.max(Math.floor(Date.now() / 30000), totp.step) + 1;
     response = await post('/api/auth/verify-totp', {
       challengeToken: data.challengeToken,
-      code: installAuthMfa.totpAt(data.secret, nextStep * 30000).code
+      code: installAuthMfa.totpAt((await database.query('SELECT totp_secret FROM auth_mfa WHERE user_id = (SELECT id FROM users WHERE email = $1)', [credentials.email])).rows[0].totp_secret ? data.secret : data.secret, nextStep * 30000).code
     });
     data = await response.json();
     assert.equal(response.status, 200);
@@ -100,7 +101,18 @@ test('email verification, authenticator enrollment, login, and recovery are requ
 
     response = await post('/api/login', { email: credentials.email, password: credentials.password });
     data = await response.json();
-    response = await post('/api/auth/verify-totp', { challengeToken: data.challengeToken, code: (await previousJson(response)).challengeToken });
+    assert.equal(data.stage, 'verify_totp');
+    response = await post('/api/auth/verify-totp', { challengeToken: data.challengeToken, code: recoveryCode });
+    data = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(data.recoveryCodeUsed, true);
+
+    response = await post('/api/login', { email: credentials.email, password: credentials.password });
+    data = await response.json();
+    response = await post('/api/auth/verify-totp', { challengeToken: data.challengeToken, code: recoveryCode });
+    data = await response.json();
+    assert.equal(response.status, 400);
+    assert.equal(data.token, undefined);
   } finally {
     global.fetch = originalFetch;
     await new Promise(resolve => server.close(resolve));
