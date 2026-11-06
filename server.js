@@ -191,6 +191,17 @@ app.post('/api/waitlist', async (req, res) => {
   }
 });
 
+let authStorageReady;
+app.use(['/api/register', '/api/login', '/api/auth'], (req, res, next) => {
+  if (!authStorageReady) authStorageReady = ensureStorage();
+  authStorageReady.then(() => next(), error => {
+    authStorageReady = null;
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
+    console.error('Authentication storage initialization failed:', error.message);
+    res.status(503).json({ message: 'Authentication storage is unavailable. Please try again later.' });
+  });
+});
+
 installAuthMfa(app, { database, bcrypt, jwt, jwtSecret: JWT_SECRET, sanitizeUser });
 
 app.post('/api/register', async (req, res) => {
