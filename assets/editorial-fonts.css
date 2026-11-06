@@ -27,6 +27,15 @@ textarea {
   font-family: 'DM Sans', Calibri, 'Segoe UI', sans-serif !important;
 }
 
+.descriptor {
+  color: #9aa0a8 !important;
+  opacity: 1 !important;
+}
+
+.layer small {
+  color: #9aa0a8 !important;
+}
+
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 3px solid #00ff88 !important;
   outline-offset: 3px;
