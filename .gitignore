@@ -18,4 +18,3 @@ __pycache__/
 services/community-rails/log/
 services/community-rails/tmp/
 services/community-rails/storage/
-services/community-rails/Gemfile.lock
