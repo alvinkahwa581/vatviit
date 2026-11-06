@@ -6,6 +6,7 @@ const fs = require('fs/promises');
 const path = require('path');
 const { Pool } = require('pg');
 const Sentry = require('@sentry/node');
+const installAuthMfa = require('./auth-mfa');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -189,6 +190,19 @@ app.post('/api/waitlist', async (req, res) => {
     return res.status(500).json({ message: 'Unable to join the waitlist right now.' });
   }
 });
+
+let authStorageReady;
+app.use(['/api/register', '/api/login', '/api/auth'], (req, res, next) => {
+  if (!authStorageReady) authStorageReady = ensureStorage();
+  authStorageReady.then(() => next(), error => {
+    authStorageReady = null;
+    if (process.env.SENTRY_DSN) Sentry.captureException(error);
+    console.error('Authentication storage initialization failed:', error.message);
+    res.status(503).json({ message: 'Authentication storage is unavailable. Please try again later.' });
+  });
+});
+
+installAuthMfa(app, { database, bcrypt, jwt, jwtSecret: JWT_SECRET, sanitizeUser });
 
 app.post('/api/register', async (req, res) => {
   try {

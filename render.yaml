@@ -19,5 +19,7 @@ services:
         sync: false
       - key: WAITLIST_NOTIFY_EMAIL
         sync: false
+      - key: MFA_ENCRYPTION_KEY
+        sync: false
       - key: SENTRY_DSN
         sync: false

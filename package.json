@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "postinstall": "node -e \"console.log('VaTViT server dependencies ready')\""
+    "postinstall": "node -e \"console.log('VaTViT server dependencies ready')\"",
+    "test": "node --test"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
