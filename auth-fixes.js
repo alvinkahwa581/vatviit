@@ -5,16 +5,19 @@
   const challenge = document.getElementById('auth-challenge');
   let rememberSession = false;
 
-  const existingToken = localStorage.getItem('vatvit_token') || sessionStorage.getItem('vatvit_token');
-  if (existingToken && !existingToken.startsWith('demo-')) {
-    window.location.replace('dashboard.html');
-    return;
-  }
-  if (existingToken) {
+  const localToken = localStorage.getItem('vatvit_token');
+  const sessionToken = sessionStorage.getItem('vatvit_token');
+  if (localToken?.startsWith('demo-')) {
     localStorage.removeItem('vatvit_token');
     localStorage.removeItem('vatvit_user');
+  }
+  if (sessionToken?.startsWith('demo-')) {
     sessionStorage.removeItem('vatvit_token');
     sessionStorage.removeItem('vatvit_user');
+  }
+  if ((localToken && !localToken.startsWith('demo-')) || (sessionToken && !sessionToken.startsWith('demo-'))) {
+    window.location.replace('dashboard.html');
+    return;
   }
 
   function selectTab(name) {
