@@ -1,11 +1,13 @@
 node_modules/
 data/users.json
 .env
+local/
 
 # Expo / React Native
 .expo/
 apps/mobile/android/
 apps/mobile/ios/
+apps/mobile/dist/
 
 # Python
 __pycache__/
@@ -16,3 +18,4 @@ __pycache__/
 services/community-rails/log/
 services/community-rails/tmp/
 services/community-rails/storage/
+services/community-rails/Gemfile.lock
