@@ -9,6 +9,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: vatvit_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d vatvit_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/vatvit_test
+      JWT_SECRET: mfa-integration-test-jwt-secret
+      MFA_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      RESEND_API_KEY: mfa-integration-test-resend-key
+      WAITLIST_FROM_EMAIL: 'VaTViT <auth-test@example.test>'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
