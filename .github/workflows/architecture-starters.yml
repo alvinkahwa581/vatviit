@@ -1,0 +1,93 @@
+name: VaTViT architecture starters
+
+on:
+  push:
+    paths:
+      - "apps/mobile/**"
+      - "services/perl-core/**"
+      - "services/community-rails/**"
+      - "integrations/**"
+      - "docs/technology-stack.md"
+      - ".github/workflows/architecture-starters.yml"
+  pull_request:
+    paths:
+      - "apps/mobile/**"
+      - "services/perl-core/**"
+      - "services/community-rails/**"
+      - "integrations/**"
+      - "docs/technology-stack.md"
+      - ".github/workflows/architecture-starters.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - name: Install locked dependencies when available
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+      - run: npm run typecheck
+      - run: npx expo install --check
+      - run: npm run build:android
+      - name: Commit generated dependency lockfile
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git add apps/mobile/package-lock.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Lock VaTViT mobile dependencies" -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+          git push
+
+  perl-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.40"
+      - name: Install Mojolicious
+        run: cpanm --notest --installdeps services/perl-core
+      - name: Test Mojolicious service
+        run: PERL5LIB=services/perl-core/lib prove -lr services/perl-core/t
+      - name: Check app syntax
+        run: perl -Iservices/perl-core/lib -c services/perl-core/app.pl
+
+  community-rails:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/community-rails
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - run: bundle exec rails test
+
+  python-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run standard-library tests
+        run: python -m unittest discover -s integrations/python/tests -v

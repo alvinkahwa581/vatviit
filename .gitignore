@@ -1,3 +1,18 @@
 node_modules/
 data/users.json
 .env
+
+# Expo / React Native
+.expo/
+apps/mobile/android/
+apps/mobile/ios/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Rails
+services/community-rails/log/
+services/community-rails/tmp/
+services/community-rails/storage/
