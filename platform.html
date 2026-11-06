@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Platform — VaTViT Trading</title> <meta name="description" content="Explore the VaTViT trading platform, including real-time markets, risk controls, portfolio tools, and broker connectivity."> <link rel="canonical" href="https://vatvit.site/platform.html">
+<title>Platform — VaTViT Trading</title> <meta name="description" content="Explore the VaTViT trading platform, including market information, risk tools, portfolio tools, and broker connectivity." /> <link rel="canonical" href="https://vatvit.site/platform.html">
 <link rel="stylesheet" href="assets/editorial-fonts.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -95,86 +95,83 @@ section{margin-bottom:3rem}
 <main id="main">
   <h1>The VaTViT Platform</h1>
   <p style="font-size:1.1rem;color:var(--white-dim);max-width:600px">
-    Institutional-grade architecture designed from the ground up for compliance, clarity, and capital control.
+    VaTViT is being built to bring market information, broker connections and risk tools into one workspace.
   </p>
 
   <section>
     <h2>Core Features</h2>
     <div class="feature-grid">
       <div class="feature-card">
-        <h3>Real-Time Markets</h3>
-        <p>Live market data from 4+ asset classes normalized into one unified data model. No latency. No gaps.</p>
+        <h3>Market Information</h3>
+        <p>Market information will depend on available data sources and completed integrations.</p>
       </div>
       <div class="feature-card">
-        <h3>Immutable Ledger</h3>
-        <p>Every transaction recorded as an append-only double-entry ledger. SHA-256 chained. Auditable forever.</p>
+        <h3>Clear Transaction History</h3>
+        <p>The platform is designed to make account activity easier to review and trace.</p>
       </div>
       <div class="feature-card">
-        <h3>Circuit Breaker</h3>
-        <p>Automatic risk control. A 1-cent discrepancy between ledger and broker halts transactions immediately.</p>
+        <h3>Risk Controls</h3>
+        <p>VaTViT is being built with controls intended to help identify unusual activity.</p>
       </div>
       <div class="feature-card">
-        <h3>Universal Wrapper</h3>
-        <p>One interface speaks FIX, REST, and WebSocket to NSE, Forex, Crypto, and International brokers.</p>
+        <h3>Broker Connections</h3>
+        <p>Broker connections are planned and depend on completed integrations.</p>
       </div>
       <div class="feature-card">
-        <h3>Portfolio P&amp;L</h3>
-        <p>Real-time mark-to-market across all asset classes. One NAV. One truth. Across all positions.</p>
+        <h3>Portfolio View</h3>
+        <p>The product direction is to make information from supported accounts easier to review together.</p>
       </div>
       <div class="feature-card">
-        <h3>Enterprise Security</h3>
-        <p>mTLS encryption, JWT authentication, OAuth 2.0, role-based access control, and audit trails.</p>
+        <h3>Security and Privacy</h3>
+        <p>Security and privacy requirements will be verified and communicated as the platform develops.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Technical Architecture</h2>
-    <div class="feature-card" style="max-width:100%;padding:2.5rem">
-      <h3>FinOS Layer Model</h3>
-      <div style="margin-top:2rem;font-family:monospace;color:var(--white-dim);line-height:2">
-        <div style="color:var(--green)">┌─ Client Interface (React Native · Next.js)</div>
-        <div style="color:var(--green)">│  └─ JWT · OAuth 2.0 · mTLS</div>
-        <div style="color:var(--gold)">├─ API Gateway</div>
-        <div style="color:var(--gold)">│  └─ Rate Limiting · Request Routing</div>
-        <div style="color:var(--orange)">├─ FinOS Core</div>
-        <div style="color:var(--orange)">│  ├─ Ledger Engine</div>
-        <div style="color:var(--orange)">│  ├─ Trade Engine</div>
-        <div style="color:var(--orange)">│  └─ P&amp;L Calculator</div>
-        <div style="color:var(--yellow)">├─ Compliance Layer</div>
-        <div style="color:var(--yellow)">│  ├─ KYC / AML</div>
-        <div style="color:var(--yellow)">│  ├─ Sanctions Screening</div>
-        <div style="color:var(--yellow)">│  └─ Audit Trail</div>
-        <div style="color:var(--green)">├─ Data Fabric</div>
-        <div style="color:var(--green)">│  ├─ PostgreSQL (Primary)</div>
-        <div style="color:var(--green)">│  ├─ Redis (Cache)</div>
-        <div style="color:var(--green)">│  └─ Kafka (Events)</div>
-        <div style="color:var(--gold)">└─ Brokerage Wrapper</div>
-        <div style="color:var(--gold)">   ├─ NSE · MT4/5 · Interactive Brokers</div>
-        <div style="color:var(--gold)">   └─ Crypto WebSocket Feeds</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Trading Markets</h2>
-    <p style="color:var(--white-dim);margin-bottom:2rem">Connect to your brokers and trade across multiple asset classes in one unified interface.</p>
+    <h2>Planned Technology Stack</h2>
+    <p style="font-size:1.05rem;color:var(--white-dim);max-width:800px">
+      This is the intended technology direction, not a description of services already in production. The current public website uses HTML, CSS and JavaScript; the existing API runs on Node.js and Express. Migration will be incremental so existing pages and services remain available while replacements are built and tested.
+    </p>
     <div class="feature-grid">
       <div class="feature-card">
-        <h3>Equities</h3>
-        <p>Nairobi Securities Exchange (NSE) via direct NSE integration. Live order routing. Real-time settlement.</p>
+        <h3>Web and Mobile</h3>
+        <p>React with TypeScript and JavaScript is planned for the web experience. React Native with TypeScript is the intended direction for mobile.</p>
       </div>
       <div class="feature-card">
-        <h3>Forex</h3>
-        <p>28 major currency pairs. Leverage up to 1:100. Direct MT4/MT5 integration via FIX 4.4.</p>
+        <h3>Core Services</h3>
+        <p>Perl is planned for future core backend services and microservices. The current Node.js API will remain until service boundaries and migration tests are in place.</p>
       </div>
       <div class="feature-card">
-        <h3>Crypto</h3>
-        <p>Bitcoin, Ethereum, and 50+ altcoins. 24/7 markets. Sub-second order execution.</p>
+        <h3>Community</h3>
+        <p>Ruby is intended for infrastructure serving community subdomains, separately from trading and account services.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Trading Integrations and Data</h3>
+        <p>MQL5 Expert Advisors and Python data-processing services are planned for future trading-system integrations. These are not currently available.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Markets in Development</h2>
+    <p style="color:var(--white-dim);margin-bottom:2rem">The platform is being designed to support a broader market view. Coverage, data and broker access depend on completed integrations; no live trading availability is implied.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Kenyan Equities</h3>
+        <p>Planned market information for Kenyan equities, subject to data availability and integration.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Foreign Exchange</h3>
+        <p>Foreign-exchange information is a planned area; broker connections and trading access are not represented as available.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Digital Assets</h3>
+        <p>Digital-asset portfolio information is a product direction, subject to supported data sources and integrations.</p>
       </div>
       <div class="feature-card">
         <h3>Commodities</h3>
-        <p>Gold, silver, oil, natural gas. Spot and futures. Real-time price feeds.</p>
+        <p>Commodity information is planned for a unified view as data sources and integrations become available.</p>
       </div>
     </div>
   </section>
@@ -182,12 +179,11 @@ section{margin-bottom:3rem}
   <section>
     <h2>Get Started</h2>
     <p style="color:var(--white-dim);margin-bottom:2rem;max-width:600px">
-      Join the early-access waitlist and be among the first to experience the future of trading.
+      Follow the product as we build and request early-access updates.
     </p>
     <div class="cta-group">
-      <button class="btn-primary">Request Early Access</button>
-      <button class="btn-secondary">Watch Demo</button>
-      <button class="btn-secondary">Read Docs</button>
+      <a class="btn-primary" href="auth.html">Request Early Access</a>
+      <a class="btn-secondary" href="markets.html">Explore Markets</a>
     </div>
   </section>
 </main>
