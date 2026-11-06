@@ -24,6 +24,7 @@
 html {
   min-width: 320px;
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -398,6 +399,10 @@ h3 {
 }
 
 @media (max-width: 800px) {
+  html {
+    scroll-padding-top: 7rem;
+  }
+
   .site-nav {
     align-items: flex-start;
     flex-direction: column;
