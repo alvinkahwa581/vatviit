@@ -16,4 +16,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm install
+      - run: node --check server.js
+      - run: node --check auth-mfa.js
+      - run: node --check auth-fixes.js
       - run: npm test
