@@ -2,6 +2,10 @@
 
 This is an isolated React and TypeScript implementation of the public homepage. It is a migration pilot, not the production website. The existing root-level pages and Node.js/Express API are unchanged.
 
+## Preview
+
+The pilot is published independently at [vatvit.site/web-pilot-preview](https://vatvit.site/web-pilot-preview/). The existing homepage and API remain unchanged. The preview is marked `noindex` and is not a production cutover.
+
 ## Run locally
 
 Use Node.js 26 and npm:
@@ -15,9 +19,10 @@ npm run dev
 
 ```sh
 npm run build
+npm run build:preview
 ```
 
-The build runs the TypeScript checker before Vite creates `dist/`. Dependencies are pinned by the committed `package-lock.json`, and GitHub Actions uses `npm ci` to verify the locked install. The workflow stores the built output as a downloadable artifact; the pilot is not published to the live domain.
+Both builds run the TypeScript checker first. `build` outputs to `dist/`; `build:preview` outputs the independently hosted pilot files to `../web-pilot-preview/`. Dependencies are pinned by the committed `package-lock.json`, and GitHub Actions uses `npm ci` to verify the locked install.
 
 ## Status
 

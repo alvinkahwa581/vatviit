@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -26,9 +26,21 @@ jobs:
         with:
           node-version: 26
       - run: npm ci --no-audit --no-fund
-      - run: npm run build
+      - run: npm run build:preview
+      - name: Publish isolated preview files
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: .
+        run: |
+          git add web-pilot-preview
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Publish VaTViT React pilot preview" -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+          git push
       - uses: actions/upload-artifact@v4
         with:
           name: vatvit-web-pilot-${{ github.sha }}
-          path: web-pilot/dist/
+          path: web-pilot-preview/
           retention-days: 14
