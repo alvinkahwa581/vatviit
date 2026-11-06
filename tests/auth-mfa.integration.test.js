@@ -74,9 +74,10 @@ test('email verification, authenticator enrollment, login, and recovery are requ
     assert.equal(data.stage, 'enroll_totp');
     assert.ok(data.secret);
     assert.match(data.otpauthUrl, /^otpauth:\/\/totp\//);
+    const authenticatorSecret = data.secret;
 
-    const totp = installAuthMfa.totpAt(data.secret);
-    response = await post('/api/auth/verify-totp', { challengeToken: data.challengeToken, code: totp.code });
+    const initialTotp = installAuthMfa.totpAt(authenticatorSecret);
+    response = await post('/api/auth/verify-totp', { challengeToken: data.challengeToken, code: initialTotp.code });
     data = await response.json();
     assert.equal(response.status, 200);
     assert.ok(data.token);
@@ -90,10 +91,10 @@ test('email verification, authenticator enrollment, login, and recovery are requ
     assert.equal(data.stage, 'verify_totp');
     assert.equal(data.token, undefined);
 
-    const nextStep = Math.max(Math.floor(Date.now() / 30000), totp.step) + 1;
+    const nextStep = Math.max(Math.floor(Date.now() / 30000), initialTotp.step) + 1;
     response = await post('/api/auth/verify-totp', {
       challengeToken: data.challengeToken,
-      code: installAuthMfa.totpAt((await database.query('SELECT totp_secret FROM auth_mfa WHERE user_id = (SELECT id FROM users WHERE email = $1)', [credentials.email])).rows[0].totp_secret ? data.secret : data.secret, nextStep * 30000).code
+      code: installAuthMfa.totpAt(authenticatorSecret, nextStep * 30000).code
     });
     data = await response.json();
     assert.equal(response.status, 200);
