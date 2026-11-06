@@ -7,7 +7,7 @@ This is an isolated React and TypeScript implementation of the public homepage. 
 Use Node.js 26 and npm:
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
@@ -17,7 +17,7 @@ npm run dev
 npm run build
 ```
 
-The build runs the TypeScript checker before Vite creates `dist/`. The GitHub Actions workflow builds the pilot and stores both the output and generated npm lockfile as a downloadable artifact. The pilot is not published to the live domain.
+The build runs the TypeScript checker before Vite creates `dist/`. Dependencies are pinned by the committed `package-lock.json`, and GitHub Actions uses `npm ci` to verify the locked install. The workflow stores the built output as a downloadable artifact; the pilot is not published to the live domain.
 
 ## Status
 

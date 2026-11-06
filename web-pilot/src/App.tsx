@@ -95,14 +95,14 @@ function App() {
               </a>
             </div>
           </div>
-          <aside className="hero-note" aria-label="Product status">
+          <div className="hero-note">
             <span className="status-dot" aria-hidden="true" />
             <p>
               <strong>Building in stages.</strong>
               <br />
               Availability depends on completed integrations.
             </p>
-          </aside>
+          </div>
         </section>
 
         <section className="section" id="platform" aria-labelledby="platform-title">
