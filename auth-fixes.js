@@ -15,32 +15,97 @@
     window.location.replace('dashboard.html');
   }
 
-  const fontLink = document.createElement('link');
-  fontLink.rel = 'stylesheet';
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap';
-  document.head.append(fontLink);
+  const mainContent = document.querySelector('.page-shell');
+  if (mainContent && mainContent.parentElement === document.body) {
+    const main = document.createElement('main');
+    main.id = 'main-content';
+    mainContent.before(main);
+    main.append(mainContent);
+    mainContent.style.minHeight = '100vh';
+  }
 
-  const style = document.createElement('style');
-  style.textContent = 'body{font-family:"DM Sans",Calibri,"Segoe UI",sans-serif}.auth-copy h1,.auth-panel h1,h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;letter-spacing:-.025em}.auth-feedback{margin:12px 0 0;color:#ff8b8b;font-size:.85rem;line-height:1.5}.submit:disabled{cursor:wait;opacity:.7}.social-btn:disabled{cursor:not-allowed;opacity:.6}';
-  document.head.append(style);
+  if (!document.querySelector('.skip-link') && document.querySelector('main')) {
+    const skipLink = document.createElement('a');
+    skipLink.className = 'skip-link';
+    skipLink.href = '#main-content';
+    skipLink.textContent = 'Skip to main content';
+    document.body.prepend(skipLink);
+    document.querySelector('main').id ||= 'main-content';
+  }
+
+  const tabs = [...document.querySelectorAll('.tab')];
+  tabs.forEach((tab, index) => {
+    tab.setAttribute('role', 'tab');
+    tab.id ||= `auth-tab-${index + 1}`;
+    tab.setAttribute('aria-controls', `${tab.dataset.tab}-panel`);
+    tab.setAttribute('aria-selected', String(tab.classList.contains('active')));
+    tab.tabIndex = tab.classList.contains('active') ? 0 : -1;
+  });
+
+  document.querySelectorAll('.form-panel').forEach(panel => {
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', `auth-tab-${panel.id === 'login-panel' ? '1' : '2'}`);
+    panel.tabIndex = 0;
+    panel.setAttribute('aria-hidden', String(!panel.classList.contains('active')));
+  });
+
+  function setTab(name) {
+    tabs.forEach(tab => {
+      const selected = tab.dataset.tab === name;
+      tab.classList.toggle('active', selected);
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    document.querySelectorAll('.form-panel').forEach(panel => {
+      const selected = panel.id === `${name}-panel`;
+      panel.classList.toggle('active', selected);
+      panel.setAttribute('aria-hidden', String(!selected));
+    });
+    const swapLink = document.getElementById('swapLink');
+    if (swapLink) swapLink.textContent = name === 'login' ? 'Create one' : 'Already have an account?';
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+      tabs[nextIndex].focus();
+      setTab(tabs[nextIndex].dataset.tab);
+    });
+  });
+
+  document.querySelectorAll('.social-btn').forEach(button => {
+    const provider = button.textContent.replace(/^Continue with\s+/i, '').trim();
+    button.disabled = true;
+    button.textContent = `Continue with ${provider} (coming soon)`;
+    button.setAttribute('aria-label', `${provider} sign-in is not available yet`);
+  });
 
   function getFeedback(form) {
     let feedback = form.querySelector('.auth-feedback');
     if (!feedback) {
       feedback = document.createElement('p');
       feedback.className = 'auth-feedback';
-      feedback.setAttribute('role', 'status');
-      feedback.setAttribute('aria-live', 'polite');
+      feedback.setAttribute('role', 'alert');
+      feedback.setAttribute('aria-live', 'assertive');
+      feedback.tabIndex = -1;
       form.append(feedback);
     }
     return feedback;
   }
 
-  document.querySelectorAll('.social-btn').forEach(button => {
-    button.disabled = true;
-    button.textContent = `${button.textContent.trim()} (coming soon)`;
-    button.setAttribute('aria-label', `${button.textContent.trim()} sign-in is coming soon`);
+  document.querySelectorAll('#login-email, #register-email').forEach(input => {
+    input.autocomplete = 'email';
   });
+  const loginPassword = document.getElementById('login-password');
+  if (loginPassword) loginPassword.autocomplete = 'current-password';
+  const registerPassword = document.getElementById('register-password');
+  if (registerPassword) registerPassword.autocomplete = 'new-password';
+  const fullName = document.getElementById('name');
+  if (fullName) fullName.autocomplete = 'name';
+  const phone = document.getElementById('phone');
+  if (phone) phone.autocomplete = 'tel';
 
   document.addEventListener('submit', async event => {
     const form = event.target;
@@ -53,6 +118,7 @@
     const submit = form.querySelector('button[type="submit"]');
     const originalText = submit.textContent;
     submit.disabled = true;
+    submit.setAttribute('aria-busy', 'true');
     submit.textContent = form.id === 'loginForm' ? 'Signing in…' : 'Creating account…';
 
     try {
@@ -94,8 +160,10 @@
       feedback.textContent = error instanceof Error
         ? error.message
         : 'Unable to reach the sign-in service. Check your connection and try again.';
+      feedback.focus();
     } finally {
       submit.disabled = false;
+      submit.removeAttribute('aria-busy');
       submit.textContent = originalText;
     }
   }, true);
