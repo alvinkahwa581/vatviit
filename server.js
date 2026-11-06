@@ -193,34 +193,58 @@ app.post('/api/waitlist', async (req, res) => {
 app.post('/api/register', async (req, res) => {
   try {
     const { name, phone, email, password } = req.body || {};
+    const normalizedName = typeof name === 'string' ? name.trim() : '';
+    const normalizedPhone = typeof phone === 'string' ? phone.trim() : '';
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    const passwordValue = typeof password === 'string' ? password : '';
 
-    if (!name || !phone || !email || !password) {
+    if (!normalizedName || !normalizedPhone || !normalizedEmail || !passwordValue) {
       return res.status(400).json({ message: 'Please complete all fields.' });
     }
 
-    if (password.length < 6) {
+    if (normalizedName.length > 100 || normalizedPhone.length > 40 || normalizedEmail.length > 254) {
+      return res.status(400).json({ message: 'Please check the length of your name, phone, and email.' });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      return res.status(400).json({ message: 'Please provide a valid email address.' });
+    }
+
+    if (passwordValue.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
     }
 
-    const users = await readUsers();
-    const exists = users.some((user) => user.email.toLowerCase() === String(email).toLowerCase());
-
-    if (exists) {
-      return res.status(409).json({ message: 'An account with that email already exists.' });
+    let users = null;
+    if (!database) {
+      users = await readUsers();
+      const exists = users.some((user) => user.email.toLowerCase() === normalizedEmail);
+      if (exists) {
+        return res.status(409).json({ message: 'An account with that email already exists.' });
+      }
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(passwordValue, 10);
     const newUser = {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      name: String(name).trim(),
-      phone: String(phone).trim(),
-      email: String(email).trim().toLowerCase(),
+      name: normalizedName,
+      phone: normalizedPhone,
+      email: normalizedEmail,
       password: hashedPassword,
       createdAt: new Date().toISOString(),
     };
 
-    users.push(newUser);
-    await writeUsers(users);
+    if (database) {
+      const result = await database.query(
+        'INSERT INTO users (id, name, phone, email, password, created_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO NOTHING RETURNING id',
+        [newUser.id, newUser.name, newUser.phone, newUser.email, newUser.password, newUser.createdAt]
+      );
+      if (result.rowCount === 0) {
+        return res.status(409).json({ message: 'An account with that email already exists.' });
+      }
+    } else {
+      users.push(newUser);
+      await writeUsers(users);
+    }
 
     const token = signToken(newUser);
     return res.status(201).json({
@@ -237,19 +261,24 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
 
-    if (!email || !password) {
+    if (!normalizedEmail || typeof password !== 'string' || !password) {
       return res.status(400).json({ message: 'Email and password are required.' });
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      return res.status(400).json({ message: 'Please provide a valid email address.' });
+    }
+
     const users = await readUsers();
-    const user = users.find((entry) => entry.email.toLowerCase() === String(email).trim().toLowerCase());
+    const user = users.find((entry) => entry.email.toLowerCase() === normalizedEmail);
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    const passwordMatch = await bcrypt.compare(String(password), user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
